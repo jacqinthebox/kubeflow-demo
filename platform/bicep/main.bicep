@@ -1,4 +1,3 @@
-// Parameters
 @description('Specifies the location.')
 param location string
 
