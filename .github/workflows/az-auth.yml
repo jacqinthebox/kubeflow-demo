@@ -9,7 +9,7 @@ permissions:
 env:
   RESOURCE_GROUP: "rg-kubeflow-d-westeurope-01"
   TEMPLATE_FILE: "bicep/main.bicep"
-  PARAMETERS_FILE: "configuration/parameters.json"
+  PARAMETERS_FILE: "./configuration/parameters.json"
   LOCATION: "westeurope"
 
 jobs:
