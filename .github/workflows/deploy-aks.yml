@@ -1,4 +1,4 @@
-name: Run Azure Login with OpenID Connect on development
+name: Deploy kubernetes
 on:
   workflow_dispatch
 
