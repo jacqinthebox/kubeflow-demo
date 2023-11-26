@@ -32,7 +32,7 @@ jobs:
 
       - name: 'run bicep init'
         run: |
-          az group create --name $RESOURCE_GROUP --location $(jq -r '.parameters.location.value' platform/configuration/parameters.json)
+          az group create --name $RESOURCE_GROUP --location westeurope
           az configure --defaults group=$RESOURCE_GROUP
           az deployment group what-if --resource-group $RESOURCE_GROUP --template-file $TEMPLATE_FILE --parameters @$PARAMETERS_FILE
       - name: 'run bicep apply'
