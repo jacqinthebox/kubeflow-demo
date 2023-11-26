@@ -6,6 +6,12 @@ permissions:
   id-token: write
   contents: read
 
+env:
+  RESOURCE_GROUP: "rg-kubeflow-d-westeurope-01"
+  TEMPLATE_FILE: "bicep/main.bicep"
+  PARAMETERS_FILE: "configuration/parameters.json"
+  LOCATION: "westeurope"
+
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
@@ -23,3 +29,15 @@ jobs:
           az account show
           az group list
           pwd
+
+      - name: bicep init
+        run: |
+          az group create --name $RESOURCE_GROUP --location $(jq -r '.parameters.location.value' parameters.json)
+          az configure --defaults group=$RESOURCE_GROUP
+          az deployment group what-if --resource-group $RESOURCE_GROUP --template-file $TEMPLATE_FILE --parameters @$PARAMETERS_FILE
+      - name: bicep apply
+        run: |
+          az group create --name $RESOURCE_GROUP --location $(jq -r '.parameters.location.value' parameters.json)
+          az configure --defaults group=$RESOURCE_GROUP
+          az deployment group what-if --resource-group $RESOURCE_GROUP --template-file $TEMPLATE_FILE --parameters @$PARAMETERS_FILE
+   
