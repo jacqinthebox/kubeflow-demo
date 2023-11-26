@@ -1,4 +1,4 @@
-name: Run Azure Login with OpenID Connect on development
+name: deploy aks to azure in development environment
 on:
   workflow_dispatch
 
@@ -6,20 +6,42 @@ permissions:
   id-token: write
   contents: read
 
+env:
+  RESOURCE_GROUP: "rg-kubeflow-d-westeurope-01"
+  TEMPLATE_FILE: "platform/bicep/main.bicep"
+  PARAMETERS_FILE: "platform/configuration/parameters.json"
+  LOCATION: "westeurope"
+
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     environment: development
     steps:
-      - name: 'Az CLI login'
+      - name: checkout platform branch
+        uses: actions/checkout@v2
+        with:
+          ref: platform 
+      - name: 'az login'
         uses: azure/login@v1
         with:
           client-id: ${{ secrets.AZURE_CLIENT_ID }}
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
-      - name: 'Run Azure CLI commands'
+      - name: 'run az cli commands to test'
         run: |
           az account show
           az group list
           pwd
+
+      - name: 'run bicep init'
+        run: |
+          az group create --name $RESOURCE_GROUP --location $(jq -r '.parameters.location.value' ${{ env.PARAMETERS_FILE }})
+          az configure --defaults group=$RESOURCE_GROUP
+          az deployment group what-if --resource-group $RESOURCE_GROUP --template-file $TEMPLATE_FILE --parameters @$PARAMETERS_FILE
+      - name: 'run bicep apply'
+        run: |
+          az group create --name $RESOURCE_GROUP --location $(jq -r '.parameters.location.value' ${{ env.PARAMETERS_FILE }})
+          az configure --defaults group=$RESOURCE_GROUP
+          az deployment group create --resource-group $RESOURCE_GROUP --template-file $TEMPLATE_FILE --parameters @$PARAMETERS_FILE
+   

@@ -1,0 +1,36 @@
+name: Deploy kubernetes
+on:
+  workflow_dispatch
+
+permissions:
+  id-token: write
+  contents: read
+
+env:
+  RESOURCE_GROUP: "rg-kubeflow-d-westeurope-01"
+  TEMPLATE_FILE: "bicep/main.bicep"
+  PARAMETERS_FILE: "configuration/parameters.json"
+  LOCATION: "westeurope"
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    environment: development
+    steps:
+      - name: 'Az CLI login'
+        uses: azure/login@v1
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      - name: bicep init
+        run: |
+          az group create --name $RESOURCE_GROUP --location $(jq -r '.parameters.location.value' parameters.json)
+          az configure --defaults group=$RESOURCE_GROUP
+          az deployment group what-if --resource-group $RESOURCE_GROUP --template-file $TEMPLATE_FILE --parameters @$PARAMETERS_FILE
+      - name: bicep apply
+        run: |
+          az group create --name $RESOURCE_GROUP --location $(jq -r '.parameters.location.value' parameters.json)
+          az configure --defaults group=$RESOURCE_GROUP
+          az deployment group what-if --resource-group $RESOURCE_GROUP --template-file $TEMPLATE_FILE --parameters @$PARAMETERS_FILE
+    

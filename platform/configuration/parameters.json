@@ -1,0 +1,23 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "location": {
+            "value": "westeurope"
+        },
+        "suffix": {
+            "value": "kubeflow-d-westeurope-01"
+        },
+        "kubernetesVersion": {
+            "value": "1.28.0"
+        },
+        "vmSize": {
+            "value": "Standard_B2ms"
+        },
+        "adminGroupObjectIDs": {
+            "value": [
+                "e1ad18a1-95ec-4cc4-8eb4-61a6aeecff1f"
+            ]
+        }
+    }
+}
