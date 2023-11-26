@@ -43,5 +43,5 @@ jobs:
         run: |
           az group create --name $RESOURCE_GROUP --location $(jq -r '.parameters.location.value' ${{ env.PARAMETERS_FILE }})
           az configure --defaults group=$RESOURCE_GROUP
-          az deployment group what-if --resource-group $RESOURCE_GROUP --template-file $TEMPLATE_FILE --parameters @$PARAMETERS_FILE
+          az deployment group --resource-group $RESOURCE_GROUP --template-file $TEMPLATE_FILE --parameters @$PARAMETERS_FILE
    
