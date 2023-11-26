@@ -96,12 +96,6 @@ resource aksCluster 'Microsoft.ContainerService/managedClusters@2021-03-01' = {
       managed: true
     }
     addonProfiles: {
-      kubeDashboard: {
-        enabled: false
-      }
-      omsagent: {
-        enabled: true
-      }
       azureKeyvaultSecretsProvider: {
         enabled: true
       }
