@@ -1,4 +1,4 @@
-name: Run Azure Login with OpenID Connect on development
+name: deploy aks to azure in development environment
 on:
   workflow_dispatch
 
@@ -8,8 +8,8 @@ permissions:
 
 env:
   RESOURCE_GROUP: "rg-kubeflow-d-westeurope-01"
-  TEMPLATE_FILE: "bicep/main.bicep"
-  PARAMETERS_FILE: "configuration/parameters.json"
+  TEMPLATE_FILE: "platform/bicep/main.bicep"
+  PARAMETERS_FILE: "platform/configuration/parameters.json"
   LOCATION: "westeurope"
 
 jobs:
@@ -32,7 +32,7 @@ jobs:
 
       - name: 'run bicep init'
         run: |
-          az group create --name $RESOURCE_GROUP --location $(jq -r '.parameters.location.value' configuration/parameters.json)
+          az group create --name $RESOURCE_GROUP --location $(jq -r '.parameters.location.value' platform/configuration/parameters.json)
           az configure --defaults group=$RESOURCE_GROUP
           az deployment group what-if --resource-group $RESOURCE_GROUP --template-file $TEMPLATE_FILE --parameters @$PARAMETERS_FILE
       - name: 'run bicep apply'
