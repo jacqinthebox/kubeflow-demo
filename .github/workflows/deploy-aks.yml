@@ -1,15 +1,27 @@
 name: deploy aks to azure in development environment
+
 on:
-  workflow_dispatch
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment to deploy to'
+        required: true
+        default: 'development'
+      branch:
+        description: 'Branch to deploy'
+        required: true
+        default: 'main'
+  
+
 
 permissions:
   id-token: write
   contents: read
 
 env:
-  RESOURCE_GROUP: "rg-kubeflow-d-westeurope-01"
-  TEMPLATE_FILE: "platform/bicep/main.bicep"
-  PARAMETERS_FILE: "platform/configuration/parameters.json"
+  RESOURCE_GROUP: "rg-kubeflow-d-westeurope-02"
+  TEMPLATE_FILE: "platform/bicep/environments/dev/main.bicep"
+  PARAMETERS_FILE: "platform/bicep/environments/dev/parameters.json"
   LOCATION: "westeurope"
 
 jobs:
