@@ -13,38 +13,13 @@ param vmSize string
 @description('Specifies the aad admim group id.')
 param adminGroupObjectIDs array
 
-resource virtualNetwork 'Microsoft.Network/virtualNetworks@2020-07-01' = {
-  name: 'vnet-${suffix}'
-  location: location
+param subnetId string
+param disableLocalAccounts bool = true
+param enablePodSecurityPolicy bool = false
+param enablePrivateCluster bool = false
 
-  properties: {
-    addressSpace: {
-      addressPrefixes: [
-        '10.200.0.0/16' // Change this to your desired VNet address range
-      ]
-    }
-    subnets: [
-      {
-        name: 'sn-mgm'
-        properties: {
-          addressPrefix: '10.200.0.0/24' // Subnet for AKS
-        }
-      }
-      {
-        name: 'sn-apps'
-        properties: {
-          addressPrefix: '10.200.1.0/24' // Subnet for AKS
-        }
-      }
-      {
-        name: 'sn-kube'
-        properties: {
-          addressPrefix: '10.200.32.0/19' // Subnet for AKS
-        }
-      }
-    ]
-  }
-}
+
+param privateDNSZone string = ''
 
 resource aksCluster 'Microsoft.ContainerService/managedClusters@2021-03-01' = {
   name: 'aks-${suffix}'
@@ -56,6 +31,13 @@ resource aksCluster 'Microsoft.ContainerService/managedClusters@2021-03-01' = {
     kubernetesVersion: kubernetesVersion
     dnsPrefix: 'aks-${suffix}'
     nodeResourceGroup: 'rg-aks-nodes-${suffix}'
+    enableRBAC: true
+    disableLocalAccounts: disableLocalAccounts
+    enablePodSecurityPolicy: enablePodSecurityPolicy
+    apiServerAccessProfile: {
+      enablePrivateCluster: enablePrivateCluster
+      privateDNSZone: privateDNSZone
+    }
     agentPoolProfiles: [
       {
         name: 'defaultpool'
@@ -66,7 +48,7 @@ resource aksCluster 'Microsoft.ContainerService/managedClusters@2021-03-01' = {
         type: 'VirtualMachineScaleSets'
         mode: 'System'
         osType: 'Linux'
-        vnetSubnetID: virtualNetwork.properties.subnets[0].id
+        vnetSubnetID: subnetId
       }
       {
         name: 'apppool'
@@ -77,18 +59,17 @@ resource aksCluster 'Microsoft.ContainerService/managedClusters@2021-03-01' = {
         type: 'VirtualMachineScaleSets'
         mode: 'User'
         osType: 'Linux'
-        vnetSubnetID: virtualNetwork.properties.subnets[0].id
+        vnetSubnetID: subnetId
       }
     ]
     networkProfile: {
       networkPlugin: 'azure'
       loadBalancerSku: 'standard'
       networkPolicy: 'calico'
-      serviceCidr: '10.0.32.0/20' // Adjust as needed
-      dnsServiceIP: '10.0.32.10' // Adjust as needed
+      serviceCidr: '10.0.32.0/20' 
+      dnsServiceIP: '10.0.32.10'
       dockerBridgeCidr: '172.17.0.1/16'
     }
-    enableRBAC: true
     aadProfile: {
       adminGroupObjectIDs: adminGroupObjectIDs
       enableAzureRBAC: true

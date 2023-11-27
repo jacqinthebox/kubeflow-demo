@@ -1,9 +1,9 @@
 #!/bin/bash
 set -euo pipefail
 
-RESOURCE_GROUP="rg-kubeflow-d-westeurope-01"
-TEMPLATE_FILE="../bicep/main.bicep"
-PARAMETERS_FILE="../configuration/parameters.json"
+RESOURCE_GROUP="rg-kubeflow-d-westeurope-02"
+TEMPLATE_FILE="../environments/dev/main.bicep"
+PARAMETERS_FILE="../environments/dev/parameters.json"
 LOCATION="westeurope"
 
 if [ "$1" == "init" ]; then
