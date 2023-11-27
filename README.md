@@ -4,8 +4,6 @@ Development-Only AKS Bicep Example for running Kubeflow.
 Please note: This repository and its contents are currently a work in progress. Features, documentation, and the overall project structure may be incomplete and subject to change. 
 
 
-# Project Title
-
 ## Table of Contents
 - [Introduction](#introduction)
 - [Bicep](#bicep)
