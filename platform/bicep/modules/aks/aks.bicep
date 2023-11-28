@@ -21,7 +21,7 @@ param enablePrivateCluster bool = false
 
 param privateDNSZone string = ''
 
-resource aksCluster 'Microsoft.ContainerService/managedClusters@2021-03-01' = {
+resource aksCluster 'Microsoft.ContainerService/managedClusters@2023-03-02-preview' = {
   name: 'aks-${suffix}'
   location: location
   identity: {
@@ -80,6 +80,68 @@ resource aksCluster 'Microsoft.ContainerService/managedClusters@2021-03-01' = {
         enabled: true
       }
     }
+    oidcIssuerProfile: {
+      enabled: true
+    }
+  }
+}
+
+resource fluxExtension 'Microsoft.KubernetesConfiguration/extensions@2023-05-01' = {
+  name: 'flux'
+  scope: aksCluster
+  properties: {
+    autoUpgradeMinorVersion: true
+    configurationProtectedSettings: {}
+    configurationSettings: {
+      'helm-controller.enabled': 'true'
+      'image-automation-controller.enabled': 'false'
+      'image-reflector-controller.enabled': 'false'
+      'kustomize-controller.enabled': 'true'
+      'notification-controller.enabled': 'true'
+      'source-controller.enabled': 'true'
+    }
+    extensionType: 'microsoft.flux'
+    releaseTrain: 'Stable'
+    scope: {
+      cluster: {
+        releaseNamespace: 'flux-system'
+      }
+      namespace: {
+        targetNamespace: 'cluster-config'
+      }
+    }
+  }
+}
+
+resource fluxConfig 'Microsoft.KubernetesConfiguration/fluxConfigurations@2022-11-01' = {
+  name: 'flux-config'
+  scope: fluxExtension
+  properties: {
+    configurationProtectedSettings: {}
+    gitRepository: {
+      // httpsCACert: 'string'
+      // httpsUser: 'string'
+      localAuthRef: 'k8s-secret-ref'
+      repositoryRef: {
+        branch: 'dev'
+      }
+      syncIntervalInSeconds: 300
+      timeoutInSeconds: 300
+      url: 'https://github.com/jacqinthebox/kubeflow-demo.git'
+    }
+    kustomizations: {
+      infra: {
+        dependsOn: []
+        path: './gitops'
+        prune: true
+        syncIntervalInSeconds: 600
+        timeoutInSeconds: 600
+    }
+    }
+    namespace: 'cluster-config'
+    scope: 'cluster'
+    sourceKind: 'GitRepository'
+    suspend: true
   }
 }
 
