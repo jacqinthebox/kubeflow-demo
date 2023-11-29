@@ -31,27 +31,27 @@ jobs:
        uses: actions/checkout@v2
        with:
          ref: main
-      - name: 'az login'
-        uses: azure/login@v1
-        with:
-          client-id: ${{ secrets.AZURE_CLIENT_ID }}
-          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+     - name: 'az login'
+       uses: azure/login@v1
+       with:
+        client-id: ${{ secrets.AZURE_CLIENT_ID }}
+        tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+        subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
-      - name: 'run az cli commands to test'
-        run: |
-          az account show
-          az group list
-          pwd
+     - name: 'run az cli commands to test'
+       run: |
+         az account show
+         az group list
+         pwd
 
-      - name: 'run bicep init'
-        run: |
-          az group create --name $RESOURCE_GROUP --location $(jq -r '.parameters.location.value' ${{ env.PARAMETERS_FILE }})
-          az configure --defaults group=$RESOURCE_GROUP
-          az deployment group what-if --resource-group $RESOURCE_GROUP --template-file $TEMPLATE_FILE --parameters @$PARAMETERS_FILE
-      - name: 'run bicep apply'
-        run: |
+     - name: 'run bicep init'
+       run: |
+        az group create --name $RESOURCE_GROUP --location $(jq -r '.parameters.location.value' ${{ env.PARAMETERS_FILE }})
+        az configure --defaults group=$RESOURCE_GROUP
+        az deployment group what-if --resource-group $RESOURCE_GROUP --template-file $TEMPLATE_FILE --parameters @$PARAMETERS_FILE
+     - name: 'run bicep apply'
+       run: |
           az group create --name $RESOURCE_GROUP --location $(jq -r '.parameters.location.value' ${{ env.PARAMETERS_FILE }})
           az configure --defaults group=$RESOURCE_GROUP
           az deployment group create --resource-group $RESOURCE_GROUP --template-file $TEMPLATE_FILE --parameters @$PARAMETERS_FILE
- 
+
