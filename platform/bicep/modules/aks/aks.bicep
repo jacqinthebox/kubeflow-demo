@@ -119,8 +119,6 @@ resource fluxConfig 'Microsoft.KubernetesConfiguration/fluxConfigurations@2023-0
   properties: {
     configurationProtectedSettings: {}
     gitRepository: {
-      // httpsCACert: 'string'
-      // httpsUser: 'string'
       localAuthRef: 'flux-pat'
       repositoryRef: {
         branch: 'dev'
@@ -134,8 +132,9 @@ resource fluxConfig 'Microsoft.KubernetesConfiguration/fluxConfigurations@2023-0
         dependsOn: []
         path: './gitops'
         prune: true
-        syncIntervalInSeconds: 600
-        timeoutInSeconds: 600
+        syncIntervalInSeconds: 300
+        timeoutInSeconds: 300
+        retryIntervalInSeconds: 300
     }
     }
     namespace: 'cluster-config'
