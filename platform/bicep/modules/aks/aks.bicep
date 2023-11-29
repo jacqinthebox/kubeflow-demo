@@ -106,9 +106,9 @@ resource fluxExtension 'Microsoft.KubernetesConfiguration/extensions@2023-05-01'
       cluster: {
         releaseNamespace: 'flux-system'
       }
-      // namespace: {
-      //   targetNamespace: 'cluster-config'
-      // }
+      namespace: {
+        targetNamespace: 'cluster-config'
+      }
     }
   }
 }
