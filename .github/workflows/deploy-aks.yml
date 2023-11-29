@@ -29,10 +29,10 @@ jobs:
     runs-on: ubuntu-latest
     environment: development
     steps:
-      - name: checkout platform branch
-        uses: actions/checkout@v2
-        with:
-          ref: platform 
+ #     - name: checkout platform branch
+ #       uses: actions/checkout@v2
+ #       with:
+ #         ref: platform 
       - name: 'az login'
         uses: azure/login@v1
         with:
