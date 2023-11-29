@@ -106,9 +106,9 @@ resource fluxExtension 'Microsoft.KubernetesConfiguration/extensions@2023-05-01'
       cluster: {
         releaseNamespace: 'flux-system'
       }
-      namespace: {
-        targetNamespace: 'cluster-config'
-      }
+      // namespace: {
+      //   targetNamespace: 'cluster-config'
+      // }
     }
   }
 }
@@ -138,7 +138,7 @@ resource fluxConfig 'Microsoft.KubernetesConfiguration/fluxConfigurations@2022-1
         timeoutInSeconds: 600
     }
     }
-    // namespace: 'cluster-config'
+    namespace: 'cluster-config'
     scope: 'cluster'
     sourceKind: 'GitRepository'
     suspend: true
