@@ -6,7 +6,7 @@
             "value": "westeurope"
         },
         "suffix": {
-            "value": "kubeflow-d-westeurope-02"
+            "value": "kubeflow-d-westeurope-01"
         },
         "kubernetesVersion": {
             "value": "1.28.0"
@@ -20,21 +20,21 @@
             ]
         },
         "addressSpace": {
-            "value": "10.202.0.0/16"
+            "value": "10.201.0.0/16"
         },
         "subnets": {
             "value": [
                 {
                     "name": "sn-mgm",
-                    "addressPrefix": "10.202.0.0/24"
+                    "addressPrefix": "10.201.0.0/24"
                 },
                 {
                     "name": "sn-apps",
-                    "addressPrefix": "10.202.1.0/24"
+                    "addressPrefix": "10.201.1.0/24"
                 },
                 {
                     "name": "sn-kube",
-                    "addressPrefix": "10.202.32.0/19"
+                    "addressPrefix": "10.201.32.0/19"
                 }
             ]
         }
