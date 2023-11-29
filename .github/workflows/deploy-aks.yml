@@ -19,7 +19,7 @@ permissions:
   contents: read
 
 env:
-  RESOURCE_GROUP: "rg-kubeflow-d-westeurope-02"
+  RESOURCE_GROUP: "rg-kubeflow-d-westeurope-01"
   TEMPLATE_FILE: "platform/bicep/environments/dev/main.bicep"
   PARAMETERS_FILE: "platform/bicep/environments/dev/parameters.json"
   LOCATION: "westeurope"
