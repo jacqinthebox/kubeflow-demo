@@ -138,7 +138,7 @@ resource fluxConfig 'Microsoft.KubernetesConfiguration/fluxConfigurations@2022-1
         timeoutInSeconds: 600
     }
     }
-    namespace: 'cluster-config'
+    // namespace: 'cluster-config'
     scope: 'cluster'
     sourceKind: 'GitRepository'
     suspend: true
