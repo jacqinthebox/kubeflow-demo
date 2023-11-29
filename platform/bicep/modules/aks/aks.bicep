@@ -140,7 +140,7 @@ resource fluxConfig 'Microsoft.KubernetesConfiguration/fluxConfigurations@2023-0
     namespace: 'cluster-config'
     scope: 'cluster'
     sourceKind: 'GitRepository'
-    suspend: true
+    suspend: false
   }
 }
 
