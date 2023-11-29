@@ -113,7 +113,7 @@ resource fluxExtension 'Microsoft.KubernetesConfiguration/extensions@2023-05-01'
   }
 }
 
-resource fluxConfig 'Microsoft.KubernetesConfiguration/fluxConfigurations@2022-11-01' = {
+resource fluxConfig 'Microsoft.KubernetesConfiguration/fluxConfigurations@2023-05-01' = {
   name: 'flux-config'
   scope: fluxExtension
   properties: {
