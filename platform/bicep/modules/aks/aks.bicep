@@ -104,11 +104,11 @@ resource fluxExtension 'Microsoft.KubernetesConfiguration/extensions@2023-05-01'
     releaseTrain: 'Stable'
     scope: {
       cluster: {
-        releaseNamespace: 'flux-system'
+        releaseNamespace: 'cluster-config'
       }
-      namespace: {
-        targetNamespace: 'cluster-config'
-      }
+      // namespace: {
+      //   targetNamespace: 'cluster-config'
+      // }
     }
   }
 }
