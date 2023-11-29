@@ -121,7 +121,7 @@ resource fluxConfig 'Microsoft.KubernetesConfiguration/fluxConfigurations@2022-1
     gitRepository: {
       // httpsCACert: 'string'
       // httpsUser: 'string'
-      localAuthRef: 'k8s-secret-ref'
+      localAuthRef: 'flux-pat'
       repositoryRef: {
         branch: 'dev'
       }
