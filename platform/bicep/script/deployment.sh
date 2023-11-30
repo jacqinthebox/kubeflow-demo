@@ -2,11 +2,11 @@
 set -euo pipefail
 
 # Set variables
-RESOURCE_GROUP="rg-kubeflow-d-westeurope-02"
-TEMPLATE_FILE="../environments/dev/main.bicep"
-PARAMETERS_FILE="../environments/dev/parameters.json"
+RESOURCE_GROUP="rg-kubeflow-p-westeurope-01"
+TEMPLATE_FILE="../environments/prod/main.bicep"
+PARAMETERS_FILE="../environments/prod/parameters.json"
 LOCATION="westeurope"
-EXPECTED_SUBSCRIPTION_ID="your subscription id"
+EXPECTED_SUBSCRIPTION_ID="4d6c9d0e-f425-4f54-abaa-587482db6e98"
 
 # Check if an argument is provided
 if [ $# -eq 0 ]; then
@@ -48,7 +48,7 @@ elif [ "$1" == "destroy" ]; then
     echo "Destroying resource group..."
     az group delete --name $RESOURCE_GROUP --yes
 else
-    echo "Invalid argument." 
+    echo "Invalid argument."
     echo "Usage: ./deployment.sh [init|plan|apply|destroy]"
     echo "Usage: RESOURCE_GROUP=my-resource-group TEMPLATE_FILE=main.bicep LOCATION=westeurope ./bicep.sh [init|apply|destroy]"
 fi
