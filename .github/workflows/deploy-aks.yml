@@ -27,10 +27,11 @@ jobs:
     runs-on: ubuntu-latest
     environment: development
     steps:
-     - name: checkout platform branch
+     - name: recursive checkout branch
        uses: actions/checkout@v2
        with:
          ref: main
+         submodules: recursive
      - name: 'az login'
        uses: azure/login@v1
        with:
