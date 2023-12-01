@@ -35,7 +35,7 @@ jobs:
      - name: 'test manifest folder'
        run: |
          pwd
-         cat ./gitops/manifests/README.md
+         ls -la ./gitops/manifests/example
          
      - name: 'az login'
        uses: azure/login@v1
