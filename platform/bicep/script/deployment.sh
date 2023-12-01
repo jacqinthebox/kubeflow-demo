@@ -6,7 +6,7 @@ RESOURCE_GROUP="rg-kubeflow-p-westeurope-01"
 TEMPLATE_FILE="../environments/prod/main.bicep"
 PARAMETERS_FILE="../environments/prod/parameters.json"
 LOCATION="westeurope"
-EXPECTED_SUBSCRIPTION_ID="4d6c9d0e-f425-4f54-abaa-587482db6e98"
+EXPECTED_SUBSCRIPTION_ID="<subscription-id>"
 
 # Check if an argument is provided
 if [ $# -eq 0 ]; then

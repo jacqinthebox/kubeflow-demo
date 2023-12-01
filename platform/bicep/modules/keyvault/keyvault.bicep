@@ -1,11 +1,8 @@
-@minLength(2)
 @description('The location to use for the deployment. defaults to Resource Groups location.')
 param location string = resourceGroup().location
 
-@minLength(3)
-@maxLength(20)
 @description('Used to name all resources')
-param suffix string
+param name string
 
 @description('Enable support for private links')
 param privateLinks bool = false
@@ -19,19 +16,24 @@ param keyVaultPurgeProtection bool = false
 @description('Add IP to KV firewall allow-list')
 param keyVaultIPAllowlist array = []
 
+param sku string = 'standard'
+param family string = 'A'
 
 var kvIPRules = [for kvIp in keyVaultIPAllowlist: {
   value: kvIp
 }]
 
+
+var nameWithoutHyphens = replace(name, '-', '')
+
 resource kv 'Microsoft.KeyVault/vaults@2021-11-01-preview' = {
-  name: 'kv-${suffix}'
+  name: nameWithoutHyphens
   location: location
   properties: {
     tenantId: subscription().tenantId
     sku: {
-      family: 'A'
-      name: 'standard'
+      family: family
+      name: sku
     }
     // publicNetworkAccess:  whether the vault will accept traffic from public internet. If set to 'disabled' all traffic except private endpoint traffic and that that originates from trusted services will be blocked.
     publicNetworkAccess: privateLinks && empty(keyVaultIPAllowlist) ? 'disabled' : 'enabled'
