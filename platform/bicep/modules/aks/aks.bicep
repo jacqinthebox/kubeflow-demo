@@ -121,7 +121,7 @@ resource fluxConfig 'Microsoft.KubernetesConfiguration/fluxConfigurations@2023-0
     gitRepository: {
       localAuthRef: 'flux-pat'
       repositoryRef: {
-        branch: 'dev'
+        branch: 'main'
       }
       syncIntervalInSeconds: 300
       timeoutInSeconds: 300
@@ -130,7 +130,7 @@ resource fluxConfig 'Microsoft.KubernetesConfiguration/fluxConfigurations@2023-0
     kustomizations: {
       infra: {
         dependsOn: []
-        path: './gitops'
+        path: './gitops/manifests/example'
         prune: true
         syncIntervalInSeconds: 300
         timeoutInSeconds: 300
