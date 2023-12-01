@@ -1,0 +1,3 @@
+[submodule "gitops/manifests"]
+	path = gitops/manifests
+	url = https://github.com/kubeflow/manifests.git
