@@ -135,7 +135,7 @@ resource fluxConfig 'Microsoft.KubernetesConfiguration/fluxConfigurations@2023-0
         syncIntervalInSeconds: 300
         timeoutInSeconds: 300
         retryIntervalInSeconds: 300
-    }
+      }
     }
     namespace: 'cluster-config'
     scope: 'cluster'
