@@ -132,8 +132,8 @@ resource fluxConfig 'Microsoft.KubernetesConfiguration/fluxConfigurations@2023-0
         dependsOn: []
         path: './gitops/manifests/example'
         prune: true
-        syncIntervalInSeconds: 300
-        timeoutInSeconds: 300
+        syncIntervalInSeconds: 3600
+        timeoutInSeconds: 1800
         retryIntervalInSeconds: 300
       }
     }
