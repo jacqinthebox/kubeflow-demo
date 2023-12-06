@@ -134,8 +134,6 @@ resource fluxConfig 'Microsoft.KubernetesConfiguration/fluxConfigurations@2023-0
         prune: true
         syncIntervalInSeconds: 300
         timeoutInSeconds: 180
-        retryIntervalInSeconds: 120
-        force: true
       }
     }
     namespace: 'cluster-config'
