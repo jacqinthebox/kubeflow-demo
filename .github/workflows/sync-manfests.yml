@@ -18,16 +18,17 @@ jobs:
     environment: ${{ github.event.inputs.environment }}
     steps:
       - name: checkout branch
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           ref: ${{ github.event.inputs.branch }}
   #         submodules: recursive
 
       - name: clone kubeflow manifests
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           repository: kubeflow/manifests
           path: manifests
+          token: ${{ secrets.GH_TOKEN }}
 
       - name: clean up git related files
         run: |
@@ -39,3 +40,5 @@ jobs:
           commit_user_name: Github Workflow
           commit_user_email: github-workflow@example.com
           commit_message: Update Kubeflow manifests
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
