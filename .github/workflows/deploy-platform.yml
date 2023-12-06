@@ -53,6 +53,7 @@ jobs:
           az deployment group create --resource-group $RESOURCE_GROUP --template-file $TEMPLATE_FILE --parameters @$PARAMETERS_FILE
 
   deploy-platform-without-flux-untill-we-have-a-working-version:
+    needs: deploy-platform
     runs-on: ubuntu-latest
     environment: development
     steps:
@@ -73,3 +74,8 @@ jobs:
        with:
          resource-group: ${{ env.RESOURCE_GROUP }}
          cluster-name: ${{ env.CLUSTER_NAME }}
+     - name: Add ingress-controller
+       run: |
+         helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
+         helm repo update
+         helm upgrade --install kf-dev ingress-nginx/ingress-nginx --namespace kube-ingress --create-namespace --set controller.service.annotations."service\.beta\.kubernetes\.io/azure-load-balancer-health-probe-request-path"=/healthz
