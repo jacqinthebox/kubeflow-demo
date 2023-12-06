@@ -17,8 +17,8 @@ permissions:
   contents: read
 
 env:
-  RESOURCE_GROUP: "rg-kubeflow-d-westeurope-01"
-  CLUSTER_NAME: "aks-kubeflow-d-westeurope-01"
+  RESOURCE_GROUP: "rg-kf-dev-we-01"
+  CLUSTER_NAME: "aks-kf-dev-we-01"
   TEMPLATE_FILE: "platform/bicep/environments/dev/main.bicep"
   PARAMETERS_FILE: "platform/bicep/environments/dev/parameters.json"
   LOCATION: "westeurope"

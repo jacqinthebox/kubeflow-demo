@@ -6,6 +6,7 @@ param adminGroupObjectIDs array
 param addressSpace string
 param subnets array
 
+
 module virtualNetwork '../../modules/network/vnet.bicep' = {
   name: 'networkModule'
   params: {
@@ -16,16 +17,18 @@ module virtualNetwork '../../modules/network/vnet.bicep' = {
    }
 }
 
+
 var snKubeSubnetId = virtualNetwork.outputs.subnetIds[2] // Assuming sn-kube is the third subnet in the array
 
-/*
-module privateDns '../../modules/privateDns/privateDns.bicep' = {
-  name: 'privateDnsModule'
+
+module keyVault '../../modules/keyvault/keyvault.bicep' = {
+  name: 'keyVaultModule'
   params: {
-    virtualNetworkId: virtualNetwork.outputs.vnetId
+    aksIdentity: aksCluster.outputs.aksIdentityPrincipalId
+    location: location
+    name: 'keyvault-${suffix}'
   }
 }
-*/
 
 module aksCluster '../../modules/aks/aks.bicep' = {
   name: 'aksModule'
@@ -39,4 +42,13 @@ module aksCluster '../../modules/aks/aks.bicep' = {
   }
 }
 
-output aksClusterId string = aksCluster.outputs.aksClusterId
+
+module acr '../../modules/acr/acr.bicep' = {
+  name: 'acrModule'
+  params: {
+    acrName: 'acr-${suffix}'
+    location: location
+    aksServicePrincipalId: aksCluster.outputs.aksKubeletIdentityObjectId
+  }
+}
+

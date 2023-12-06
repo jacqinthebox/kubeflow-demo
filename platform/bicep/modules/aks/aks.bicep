@@ -17,16 +17,27 @@ param subnetId string
 param disableLocalAccounts bool = true
 param enablePodSecurityPolicy bool = false
 param enablePrivateCluster bool = false
-
-
 param privateDNSZone string = ''
+
+param identityType string = 'systemAssigned' // Choose 'systemAssigned' or 'userAssigned'
+param userAssignedIdentityId string = '' // Resource ID of the user-assigned identity (required if identityType is 'userAssigned')
+
+var isSystemAssigned = identityType == 'systemAssigned'
+var isUserAssigned = identityType == 'userAssigned'
+
+
 
 resource aksCluster 'Microsoft.ContainerService/managedClusters@2023-03-02-preview' = {
   name: 'aks-${suffix}'
   location: location
-  identity: {
+  identity: isSystemAssigned ? {
     type: 'SystemAssigned'
-  }
+  } : isUserAssigned ? {
+    type: 'UserAssigned'
+    userAssignedIdentities: {
+      '${userAssignedIdentityId}': {}
+    }
+  } : null
   properties: {
     kubernetesVersion: kubernetesVersion
     dnsPrefix: 'aks-${suffix}'
@@ -144,3 +155,6 @@ resource fluxConfig 'Microsoft.KubernetesConfiguration/fluxConfigurations@2023-0
 }
 
 output aksClusterId string = aksCluster.id
+output aksKubeletIdentityObjectId string = aksCluster.properties.identityProfile.kubeletidentity.objectId
+output aksIdentityPrincipalId string = isSystemAssigned ? aksCluster.identity.principalId : ''
+output aksIdentityType string = aksCluster.identity.type
