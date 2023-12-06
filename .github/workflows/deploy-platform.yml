@@ -18,6 +18,7 @@ permissions:
 
 env:
   RESOURCE_GROUP: "rg-kubeflow-d-westeurope-01"
+  CLUSTER_NAME: "aks-kubeflow-d-westeurope-01"
   TEMPLATE_FILE: "platform/bicep/environments/dev/main.bicep"
   PARAMETERS_FILE: "platform/bicep/environments/dev/parameters.json"
   LOCATION: "westeurope"
@@ -51,7 +52,7 @@ jobs:
           az configure --defaults group=$RESOURCE_GROUP
           az deployment group create --resource-group $RESOURCE_GROUP --template-file $TEMPLATE_FILE --parameters @$PARAMETERS_FILE
 
-  install-kubeflow:
+  deploy-platform-without-flux-untill-we-have-a-working-version:
     runs-on: ubuntu-latest
     environment: development
     steps:
@@ -60,4 +61,15 @@ jobs:
        with:
          ref: main
 #         submodules: recursive
-         
+     - name: 'az login'
+       uses: azure/login@v1
+       with:
+        client-id: ${{ secrets.AZURE_CLIENT_ID }}
+        tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+        subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+     - name: Azure Kubernetes set context
+       uses: Azure/aks-set-context@v3
+       with:
+         resource-group: ${{ env.RESOURCE_GROUP }}
+         cluster-name: ${{ env.CLUSTER_NAME }}
