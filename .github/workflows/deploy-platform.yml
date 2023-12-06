@@ -1,4 +1,4 @@
-name: deploy aks to azure in development environment
+name: Deploy platform
 
 on:
   workflow_dispatch:
