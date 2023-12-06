@@ -1,0 +1,40 @@
+name: Sync kubeflow manifests
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment to deploy to'
+        required: true
+        default: 'development'
+      branch:
+        description: 'Branch to deploy'
+        required: true
+        default: 'main'
+
+jobs:
+  clone:
+    runs-on: ubuntu-latest
+    environment: ${{ github.event.inputs.environment }}
+    steps:
+      - name: checkout branch
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.inputs.branch }}
+  #         submodules: recursive
+
+      - name: clone kubeflow manifests
+        uses: actions/checkout@v3
+        with:
+          repository: kubeflow/manifests
+
+      - name: clean up git related files
+        run: |
+          find manifests -name ".git*" -type d -exec rm -rf {} +
+
+      - name: auto-commit changes
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_user_name: Github Workflow
+          commit_user_email: github-workflow@example.com
+          commit_message: Update Kubeflow manifests
