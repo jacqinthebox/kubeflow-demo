@@ -23,7 +23,7 @@ env:
   LOCATION: "westeurope"
 
 jobs:
-  build-and-deploy:
+  deploy-platform:
     runs-on: ubuntu-latest
     environment: development
     steps:
@@ -51,3 +51,13 @@ jobs:
           az configure --defaults group=$RESOURCE_GROUP
           az deployment group create --resource-group $RESOURCE_GROUP --template-file $TEMPLATE_FILE --parameters @$PARAMETERS_FILE
 
+  install-kubeflow:
+    runs-on: ubuntu-latest
+    environment: development
+    steps:
+     - name: checkout branch
+       uses: actions/checkout@v3
+       with:
+         ref: main
+#         submodules: recursive
+         

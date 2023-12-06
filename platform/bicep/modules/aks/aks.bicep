@@ -130,7 +130,7 @@ resource fluxConfig 'Microsoft.KubernetesConfiguration/fluxConfigurations@2023-0
     kustomizations: {
       infra: {
         dependsOn: []
-        path: './gitops/manifests/example'
+        path: './gitops/namespace'
         prune: true
         syncIntervalInSeconds: 300
         timeoutInSeconds: 180
