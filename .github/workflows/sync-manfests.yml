@@ -35,6 +35,10 @@ jobs:
         run: |
           find gitops/manifests -name ".git*" -type d -exec rm -rf {} +
 
+      - name: plumbing yaml to allow istio sidecar injection
+        run: |
+          sed -i '/name: istio-sidecar-injector/a \ \ annotations:\n\ \ \ \ admissions.enforcer/disabled: '\''true'\''' gitops/manifests/common/istio-1-17/istio-install/base/install.yaml
+
       - name: auto-commit changes
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
