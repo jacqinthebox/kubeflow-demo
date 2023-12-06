@@ -26,7 +26,7 @@ module keyVault '../../modules/keyvault/keyvault.bicep' = {
   params: {
     aksIdentity: aksCluster.outputs.aksIdentityPrincipalId
     location: location
-    name: 'keyvault-${suffix}'
+    keyVaultName: 'kv-${suffix}'
   }
 }
 

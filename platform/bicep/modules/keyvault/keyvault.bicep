@@ -2,7 +2,8 @@
 param location string = resourceGroup().location
 
 @description('Used to name all resources')
-param name string
+@maxLength(24)
+param keyVaultName string
 
 @description('Enable support for private links')
 param privateLinks bool = false
@@ -26,10 +27,9 @@ var kvIPRules = [for kvIp in keyVaultIPAllowlist: {
 param aksIdentity string
 
 
-var nameWithoutHyphens = replace(name, '-', '')
 
 resource kv 'Microsoft.KeyVault/vaults@2021-11-01-preview' = {
-  name: nameWithoutHyphens
+  name: keyVaultName
   location: location
   properties: {
     tenantId: subscription().tenantId
