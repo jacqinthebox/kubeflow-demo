@@ -37,7 +37,11 @@ jobs:
 
       - name: plumbing yaml to allow istio sidecar injection
         run: |
-          sed -i '/name: istio-sidecar-injector/a \ \ annotations:\n\ \ \ \ admissions.enforcer/disabled: '\''true'\''' gitops/manifests/common/istio-1-17/istio-install/base/install.yaml
+          sed -i '/name: istio-sidecar-injector/a \ \ annotations:\n\ \ \ \ admissions.enforcer/disabled: '\''true'\''' infrastructure/kubeflow/manifests/common/istio-1-17/istio-install/base/install.yaml
+
+      - name: plumbing yaml to add namespace to deafult-install-config-9h2h2b6hbk configmap 
+        run: |
+          sed -i 's/\(configMapGenerator:\)/namespace: kubeflow\n\1/' infrastructure/kubeflow/manifests/common/user-namespace/base/kustomization.yaml
 
       - name: auto-commit changes
         uses: stefanzweifel/git-auto-commit-action@v5
