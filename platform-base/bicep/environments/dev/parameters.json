@@ -6,7 +6,7 @@
             "value": "westeurope"
         },
         "suffix": {
-            "value": "kf-dev-we-01"
+            "value": "kf-dev-we-04"
         },
         "kubernetesVersion": {
             "value": "1.28.0"

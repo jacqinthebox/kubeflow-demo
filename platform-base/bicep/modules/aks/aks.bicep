@@ -64,6 +64,9 @@ resource aksCluster 'Microsoft.ContainerService/managedClusters@2023-03-02-previ
       {
         name: 'apppool'
         count: 1
+        enableAutoScaling: true
+        minCount: 1
+        maxCount: 6
         vmSize: vmSize
         osDiskSizeGB: 30
         maxPods: 110
@@ -136,12 +139,33 @@ resource fluxConfig 'Microsoft.KubernetesConfiguration/fluxConfigurations@2023-0
       }
       syncIntervalInSeconds: 300
       timeoutInSeconds: 300
-      url: 'https://github.com/jacqinthebox/kubeflow-demo.git'
+      url: 'https://github.com/jacqinthebox/kubeflow-demo'
     }
     kustomizations: {
-      infra: {
+      kfbase: {
         dependsOn: []
-        path: './gitops/manifests/example'
+        path: './gitops/infrastructure/kubeflow/kf-base'
+        prune: true
+        syncIntervalInSeconds: 300
+        timeoutInSeconds: 180
+      }
+      kfroles: {
+        dependsOn: [ 'kfbase' ]
+        path: './gitops/infrastructure/kubeflow/kf-roles'
+        prune: true
+        syncIntervalInSeconds: 300
+        timeoutInSeconds: 180
+      }
+      kfpipelines: {
+        dependsOn: [ 'kfroles' ]
+        path: './gitops/infrastructure/kubeflow/kf-pipelines'
+        prune: true
+        syncIntervalInSeconds: 300
+        timeoutInSeconds: 180
+      }
+      kfdashboard: {
+        dependsOn: [ 'kfpipelines' ]
+        path: './gitops/infrastructure/kubeflow/kf-dashboard'
         prune: true
         syncIntervalInSeconds: 300
         timeoutInSeconds: 180

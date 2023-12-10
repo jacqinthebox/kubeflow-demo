@@ -6,7 +6,7 @@ RESOURCE_GROUP="rg-kf-dev-we-01"
 TEMPLATE_FILE="../environments/dev/main.bicep"
 PARAMETERS_FILE="../environments/dev/parameters.json"
 LOCATION="westeurope"
-EXPECTED_SUBSCRIPTION_ID="e267d216-a7aa-42e4-905a-f18316a144c4"
+EXPECTED_SUBSCRIPTION_ID="subscription id"
 
 # Check if an argument is provided
 if [ $# -eq 0 ]; then

@@ -1,4 +1,4 @@
-name: Deploy platform
+name: Deploy platform with Bicep
 
 on:
   workflow_dispatch:
@@ -19,8 +19,8 @@ permissions:
 env:
   RESOURCE_GROUP: "rg-kf-dev-we-01"
   CLUSTER_NAME: "aks-kf-dev-we-01"
-  TEMPLATE_FILE: "platform/bicep/environments/dev/main.bicep"
-  PARAMETERS_FILE: "platform/bicep/environments/dev/parameters.json"
+  TEMPLATE_FILE: "platform-base/bicep/environments/dev/main.bicep"
+  PARAMETERS_FILE: "platform-base/bicep/environments/dev/parameters.json"
   LOCATION: "westeurope"
 
 jobs:
@@ -51,31 +51,3 @@ jobs:
           az group create --name $RESOURCE_GROUP --location $(jq -r '.parameters.location.value' ${{ env.PARAMETERS_FILE }})
           az configure --defaults group=$RESOURCE_GROUP
           az deployment group create --resource-group $RESOURCE_GROUP --template-file $TEMPLATE_FILE --parameters @$PARAMETERS_FILE
-
-  deploy-platform-without-flux-untill-we-have-a-working-version:
-    needs: deploy-platform
-    runs-on: ubuntu-latest
-    environment: development
-    steps:
-     - name: checkout branch
-       uses: actions/checkout@v3
-       with:
-         ref: main
-#         submodules: recursive
-     - name: 'az login'
-       uses: azure/login@v1
-       with:
-        client-id: ${{ secrets.AZURE_CLIENT_ID }}
-        tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-        subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-
-     - name: Azure Kubernetes set context
-       uses: Azure/aks-set-context@v3
-       with:
-         resource-group: ${{ env.RESOURCE_GROUP }}
-         cluster-name: ${{ env.CLUSTER_NAME }}
-     - name: Add ingress-controller
-       run: |
-         helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
-         helm repo update
-         helm upgrade --install kf-dev ingress-nginx/ingress-nginx --namespace kube-ingress --create-namespace --set controller.service.annotations."service\.beta\.kubernetes\.io/azure-load-balancer-health-probe-request-path"=/healthz

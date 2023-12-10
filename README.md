@@ -32,6 +32,13 @@ chmod +x deployment.sh
 
 ## Introduction
 
+Adjustments:
+
+* Hack for Istio
+* Check gitignore for excluding env or ENV
+* Add namespace to eliminate error `ConfigMap/default-install-config-9h2h2b6hbk namespace not specified: the server could not find the requested resource`
+* Turn on autoscaling
+
 ## Bicep
 
 ## Terraform
