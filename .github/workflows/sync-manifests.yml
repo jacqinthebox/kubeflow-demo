@@ -23,6 +23,10 @@ jobs:
           ref: ${{ github.event.inputs.branch }}
           #         submodules: recursive
 
+      - name: remove current manifest files
+        run: |
+          rm -rf gitops/infrastructure/kubeflow/manifests
+
       - name: clone kubeflow manifests
         uses: actions/checkout@v4
         with:
