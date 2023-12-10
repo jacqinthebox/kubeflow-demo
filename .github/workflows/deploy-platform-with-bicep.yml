@@ -17,7 +17,7 @@ permissions:
   contents: read
 
 env:
-  RESOURCE_GROUP: "kf-dev-we-01"
+  RESOURCE_GROUP: "rg-kf-dev-we-01"
   CLUSTER_NAME: "aks-kf-dev-we-01"
   TEMPLATE_FILE: "platform-base/bicep/environments/dev/main.bicep"
   PARAMETERS_FILE: "platform-base/bicep/environments/dev/parameters.json"
