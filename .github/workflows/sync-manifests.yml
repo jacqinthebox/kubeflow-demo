@@ -21,6 +21,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           ref: ${{ github.event.inputs.branch }}
+          token: ${{ secrets.GH_TOKEN }}
           #         submodules: recursive
 
       - name: remove current manifest files
