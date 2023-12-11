@@ -2,7 +2,7 @@
 set -euo pipefail
 
 # Set variables
-RESOURCE_GROUP="rg-kf-dev-we-01"
+RESOURCE_GROUP="rg-kf-dev-we-02"
 TEMPLATE_FILE="../environments/dev/main.bicep"
 PARAMETERS_FILE="../environments/dev/parameters.json"
 LOCATION="westeurope"

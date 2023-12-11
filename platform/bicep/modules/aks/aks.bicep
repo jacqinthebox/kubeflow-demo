@@ -142,30 +142,9 @@ resource fluxConfig 'Microsoft.KubernetesConfiguration/fluxConfigurations@2023-0
       url: 'https://github.com/jacqinthebox/kubeflow-demo'
     }
     kustomizations: {
-      kfbase: {
+      infra: {
         dependsOn: []
-        path: './gitops/infrastructure/kubeflow/kf-base'
-        prune: true
-        syncIntervalInSeconds: 300
-        timeoutInSeconds: 180
-      }
-      kfroles: {
-        dependsOn: [ 'kfbase' ]
-        path: './gitops/infrastructure/kubeflow/kf-roles'
-        prune: true
-        syncIntervalInSeconds: 300
-        timeoutInSeconds: 180
-      }
-      kfpipelines: {
-        dependsOn: [ 'kfroles' ]
-        path: './gitops/infrastructure/kubeflow/kf-pipelines'
-        prune: true
-        syncIntervalInSeconds: 300
-        timeoutInSeconds: 180
-      }
-      kfdashboard: {
-        dependsOn: [ 'kfpipelines' ]
-        path: './gitops/infrastructure/kubeflow/kf-dashboard'
+        path: './gitops/infrastructure'
         prune: true
         syncIntervalInSeconds: 300
         timeoutInSeconds: 180
