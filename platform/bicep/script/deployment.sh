@@ -2,22 +2,22 @@
 set -euo pipefail
 
 # Config section
-# Your Azure subscription id
+# (Required) Your Azure subscription id
 EXPECTED_SUBSCRIPTION_ID="subscription_id"
 
-# Change this if needed (respects the CAF naming convention)
+# (Optional) Change this if needed (respects the CAF naming convention)
 SUFFIX="kf-d-we-99"
 
-# Change this to the desired location
+# (Optional) Change this to the desired location
 LOCATION="westeurope"
 
-# The admin group object id
+# (Optional) Change the admin group object id
 ADMIN_GROUP_OBJECT_ID="00000000-0000-0000-0000-000000000000"
 
 # Change this to your (forked) git repo
 FLUX_GIT_REPOSITORY="https://github.com/jacqinthebox/kubeflow-demo"
 
-# Do not change thisi
+# Do not change this
 PARAMETERS_FILE="../environments/dev/parameters.json"
 
 # Do not change this
