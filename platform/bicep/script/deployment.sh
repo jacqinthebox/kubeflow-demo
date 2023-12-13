@@ -2,13 +2,13 @@
 set -euo pipefail
 
 # Set variables
-SUFFIX="kf-dev-we-01" # this respects the CAF naming convention
+SUFFIX="kf-d-we-99" # change this if needed (respects the CAF naming convention)
 TEMPLATE_FILE="../environments/dev/main.bicep" # do not change this
 PARAMETERS_FILE="../environments/dev/parameters.json" # do not change this
 LOCATION="westeurope" # change to your location
 ADMIN_GROUP_OBJECT_ID="00000000-0000-0000-0000-000000000000" # (optional) change this to your EntraId admin group object id
-FLUX_GIT_REPOSITORY="https://github.com/jacqinthebox/kubeflow-demo" # change this to your (forked) git repo
-EXPECTED_SUBSCRIPTION_ID="00000000-0000-0000-0000-000000000000" # your Azure subscription id
+FLUX_GIT_REPOSITORY="https://github.com/jacqinthebox/kubeflow-demo" # (optional) change this to your (forked) git repo
+EXPECTED_SUBSCRIPTION_ID="subscription_id" # (required) your Azure subscription id
 
 # Check if an argument is provided
 if [ $# -eq 0 ]; then
@@ -44,11 +44,17 @@ if [ "$1" == "init" ]; then
     az configure --defaults group=$RESOURCE_GROUP
 elif [ "$1" == "plan" ]; then
     echo "Showing changes required by the current configuration..."
-    az deployment group what-if --resource-group $RESOURCE_GROUP --template-file $TEMPLATE_FILE --parameters @$PARAMETERS_FILE --parameters adminGroupObjectIDs='["'$ADMIN_GROUP_OBJECT_ID'"]' fluxGitRepository=$FLUX_GIT_REPOSITORY
+    az deployment group what-if --resource-group $RESOURCE_GROUP --template-file $TEMPLATE_FILE --parameters @$PARAMETERS_FILE --parameters adminGroupObjectIDs='["'$ADMIN_GROUP_OBJECT_ID'"]' suffix=$SUFFIX fluxGitRepository=$FLUX_GIT_REPOSITORY
 elif [ "$1" == "apply" ]; then
     echo "Create or update infrastructure.."
-    az deployment group create --resource-group $RESOURCE_GROUP --template-file $TEMPLATE_FILE --parameters @$PARAMETERS_FILE --parameters adminGroupObjectIDs='["'$ADMIN_GROUP_OBJECT_ID'"]' fluxGitRepository=$FLUX_GIT_REPOSITORY
+    az deployment group create --resource-group $RESOURCE_GROUP --template-file $TEMPLATE_FILE --parameters @$PARAMETERS_FILE --parameters adminGroupObjectIDs='["'$ADMIN_GROUP_OBJECT_ID'"]' suffix=$SUFFIX fluxGitRepository=$FLUX_GIT_REPOSITORY
 
+    echo "Done. Now give your account admin access to the cluster!"
+    echo "Run the following command: "
+    echo
+    objectId=$(az ad signed-in-user show | jq -r .id)
+    echo "az role assignment create --assignee $objectId --role "Azure Kubernetes Service RBAC Admin" --scope /subscriptions/${EXPECTED_SUBSCRIPTION_ID}/resourcegroups/$RESOURCE_GROUP/providers/Microsoft.ContainerService/managedClusters/aks-${SUFFIX}"
+   echo
 elif [ "$1" == "destroy" ]; then
     echo "Destroying resource group..."
     az group delete --name $RESOURCE_GROUP --yes
