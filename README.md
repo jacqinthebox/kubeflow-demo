@@ -15,7 +15,7 @@ Please note: This repository and its contents are currently a work in progress. 
 ## TLDR
 
 To deploy a cluster with Bicep, you will need to edit just a few variables in the [deployment](platform/bicep/script/deployment.sh)
- script.
+ script. Fork the repo or just clone this one.
 
 ```sh
 git clone https://github.com/jacqinthebox/kubeflow-demo.git && cd kubeflow-demo/platform/bicep/script
