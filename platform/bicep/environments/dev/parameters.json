@@ -6,7 +6,7 @@
             "value": "westeurope"
         },
         "suffix": {
-            "value": "kf-dev-we-02"
+            "value": "kf-dev-we-01"
         },
         "kubernetesVersion": {
             "value": "1.28.0"
@@ -16,7 +16,12 @@
         },
         "adminGroupObjectIDs": {
             "value": [
-                "e1ad18a1-95ec-4cc4-8eb4-61a6aeecff1f"
+                "00000000-0000-0000-0000-000000000000"
+            ]
+        },
+        "fluxGitRepository": {
+            "value": [
+                "https://github.com/octocat/Hello-World"
             ]
         },
         "addressSpace": {

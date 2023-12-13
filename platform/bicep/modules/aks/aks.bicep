@@ -22,6 +22,8 @@ param privateDNSZone string = ''
 param identityType string = 'systemAssigned' // Choose 'systemAssigned' or 'userAssigned'
 param userAssignedIdentityId string = '' // Resource ID of the user-assigned identity (required if identityType is 'userAssigned')
 
+param fluxGitRepository string
+
 var isSystemAssigned = identityType == 'systemAssigned'
 var isUserAssigned = identityType == 'userAssigned'
 
@@ -133,13 +135,13 @@ resource fluxConfig 'Microsoft.KubernetesConfiguration/fluxConfigurations@2023-0
   properties: {
     configurationProtectedSettings: {}
     gitRepository: {
-      localAuthRef: 'flux-pat'
+//      localAuthRef: 'flux-pat'
       repositoryRef: {
         branch: 'main'
       }
       syncIntervalInSeconds: 300
       timeoutInSeconds: 300
-      url: 'https://github.com/jacqinthebox/kubeflow-demo'
+      url: fluxGitRepository
     }
     kustomizations: {
       infra: {

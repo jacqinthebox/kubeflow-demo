@@ -5,7 +5,7 @@ param vmSize string
 param adminGroupObjectIDs array
 param addressSpace string
 param subnets array
-
+param fluxGitRepository string
 
 module virtualNetwork '../../modules/network/vnet.bicep' = {
   name: 'networkModule'
@@ -39,6 +39,7 @@ module aksCluster '../../modules/aks/aks.bicep' = {
     vmSize: vmSize
     adminGroupObjectIDs: adminGroupObjectIDs
     subnetId: snKubeSubnetId
+    fluxGitRepository: fluxGitRepository
   }
 }
 

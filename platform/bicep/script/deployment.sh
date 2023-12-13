@@ -2,11 +2,13 @@
 set -euo pipefail
 
 # Set variables
-RESOURCE_GROUP="rg-kf-dev-we-02"
-TEMPLATE_FILE="../environments/dev/main.bicep"
-PARAMETERS_FILE="../environments/dev/parameters.json"
-LOCATION="westeurope"
-EXPECTED_SUBSCRIPTION_ID="subscription id"
+SUFFIX="kf-dev-we-01" # this respects the CAF naming convention
+TEMPLATE_FILE="../environments/dev/main.bicep" # do not change this
+PARAMETERS_FILE="../environments/dev/parameters.json" # do not change this
+LOCATION="westeurope" # change to your location
+ADMIN_GROUP_OBJECT_ID="your admin group objectid" # change this to your EntraId admin group object id
+FLUX_GIT_REPOSITORY="https://github.com/octocat/Hello-World" # change this to your (forked) git repo
+EXPECTED_SUBSCRIPTION_ID="00000000-0000-0000-0000-000000000000" # your Azure subscription id
 
 # Check if an argument is provided
 if [ $# -eq 0 ]; then
@@ -34,16 +36,19 @@ if [ "$CURRENT_SUBSCRIPTION_ID" != "$EXPECTED_SUBSCRIPTION_ID" ]; then
 fi
 
 # Blatantly pretending to be Terraform
+RESOURCE_GROUP=rg-${SUFFIX}
+
 if [ "$1" == "init" ]; then
     echo "Initializing for deployment.."
     az group create --name $RESOURCE_GROUP --location $LOCATION
     az configure --defaults group=$RESOURCE_GROUP
 elif [ "$1" == "plan" ]; then
     echo "Showing changes required by the current configuration..."
-    az deployment group what-if --resource-group $RESOURCE_GROUP --template-file $TEMPLATE_FILE --parameters @$PARAMETERS_FILE
+    az deployment group what-if --resource-group $RESOURCE_GROUP --template-file $TEMPLATE_FILE --parameters @$PARAMETERS_FILE --parameters adminGroupObjectIDs='["'$ADMIN_GROUP_OBJECT_ID'"]' fluxGitRepository=$FLUX_GIT_REPOSITORY
 elif [ "$1" == "apply" ]; then
     echo "Create or update infrastructure.."
-    az deployment group create --resource-group $RESOURCE_GROUP --template-file $TEMPLATE_FILE --parameters @$PARAMETERS_FILE
+    az deployment group create --resource-group $RESOURCE_GROUP --template-file $TEMPLATE_FILE --parameters @$PARAMETERS_FILE --parameters adminGroupObjectIDs='["'$ADMIN_GROUP_OBJECT_ID'"]' fluxGitRepository=$FLUX_GIT_REPOSITORY
+
 elif [ "$1" == "destroy" ]; then
     echo "Destroying resource group..."
     az group delete --name $RESOURCE_GROUP --yes
