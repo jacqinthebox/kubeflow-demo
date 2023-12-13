@@ -6,7 +6,7 @@ SUFFIX="kf-dev-we-01" # this respects the CAF naming convention
 TEMPLATE_FILE="../environments/dev/main.bicep" # do not change this
 PARAMETERS_FILE="../environments/dev/parameters.json" # do not change this
 LOCATION="westeurope" # change to your location
-ADMIN_GROUP_OBJECT_ID="your admin group objectid" # change this to your EntraId admin group object id
+ADMIN_GROUP_OBJECT_ID="your admin group objectid" # (optional) change this to your EntraId admin group object id
 FLUX_GIT_REPOSITORY="https://github.com/octocat/Hello-World" # change this to your (forked) git repo
 EXPECTED_SUBSCRIPTION_ID="00000000-0000-0000-0000-000000000000" # your Azure subscription id
 
