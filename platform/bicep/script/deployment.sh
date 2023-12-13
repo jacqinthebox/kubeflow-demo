@@ -1,14 +1,28 @@
 #!/bin/bash
 set -euo pipefail
 
-# Set variables
-SUFFIX="kf-d-we-99" # change this if needed (respects the CAF naming convention)
-TEMPLATE_FILE="../environments/dev/main.bicep" # do not change this
-PARAMETERS_FILE="../environments/dev/parameters.json" # do not change this
-LOCATION="westeurope" # change to your location
-ADMIN_GROUP_OBJECT_ID="00000000-0000-0000-0000-000000000000" # (optional) change this to your EntraId admin group object id
-FLUX_GIT_REPOSITORY="https://github.com/jacqinthebox/kubeflow-demo" # (optional) change this to your (forked) git repo
-EXPECTED_SUBSCRIPTION_ID="subscription_id" # (required) your Azure subscription id
+# Config section
+# Your Azure subscription id
+EXPECTED_SUBSCRIPTION_ID="subscription_id"
+
+# Change this if needed (respects the CAF naming convention)
+SUFFIX="kf-d-we-99"
+
+# Change this to the desired location
+LOCATION="westeurope"
+
+# The admin group object id
+ADMIN_GROUP_OBJECT_ID="00000000-0000-0000-0000-000000000000"
+
+# Change this to your (forked) git repo
+FLUX_GIT_REPOSITORY="https://github.com/jacqinthebox/kubeflow-demo"
+
+# Do not change thisi
+PARAMETERS_FILE="../environments/dev/parameters.json"
+
+# Do not change this
+TEMPLATE_FILE="../environments/dev/main.bicep"
+
 
 # Check if an argument is provided
 if [ $# -eq 0 ]; then
