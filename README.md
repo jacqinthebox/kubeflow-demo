@@ -25,7 +25,11 @@ chmod +x deployment.sh
 ```
 2. Edit [deployment.sh](platform/bicep/script/deployment.sh) and change the subscription id, and optionally change the other vars in the Config section.
 
-3. Run `init` to create the resource group 
+```sh
+vim deployment.sh # or any other editor
+```   
+
+4. Run `init` to create the resource group 
 
 ```sh
 ./deployment.sh init
