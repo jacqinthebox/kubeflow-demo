@@ -32,6 +32,7 @@ vim deployment.sh # or any other editor
 4. Run `init` to create the resource group 
 
 ```sh
+az login set --subscription <your sub>
 ./deployment.sh init
 ```
 4. Then run `plan` to do a dry-run
