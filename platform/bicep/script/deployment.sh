@@ -1,7 +1,7 @@
 #!/bin/bash
 set -euo pipefail
 
-# Config section
+# Begin config section
 # (Required) Your Azure subscription id
 EXPECTED_SUBSCRIPTION_ID="subscription_id"
 
@@ -16,6 +16,8 @@ ADMIN_GROUP_OBJECT_ID="00000000-0000-0000-0000-000000000000"
 
 # Change this to your (forked) git repo
 FLUX_GIT_REPOSITORY="https://github.com/jacqinthebox/kubeflow-demo"
+# End config
+
 
 # Do not change this
 PARAMETERS_FILE="../environments/dev/parameters.json"
