@@ -20,9 +20,7 @@
             ]
         },
         "fluxGitRepository": {
-            "value": [
-                "https://github.com/octocat/Hello-World"
-            ]
+            "value": "https://github.com/jacqinthebox/kubeflow-demo"
         },
         "addressSpace": {
             "value": "10.201.0.0/16"
