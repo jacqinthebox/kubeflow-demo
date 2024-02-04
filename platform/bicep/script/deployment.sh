@@ -16,8 +16,11 @@ ADMIN_GROUP_OBJECT_ID="00000000-0000-0000-0000-000000000000"
 
 # Change this to your (forked) git repo
 FLUX_GIT_REPOSITORY="https://github.com/jacqinthebox/kubeflow-demo"
-# End config
 
+# Change this to your ssh-rsa public key for remote access
+SSH_PUBKEY="your ssh-rsa pub key"
+MY_IP_ADDRESS="your-ip-address/32"
+# End config
 
 # Do not change this
 PARAMETERS_FILE="../environments/dev/parameters.json"
@@ -60,10 +63,10 @@ if [ "$1" == "init" ]; then
     az configure --defaults group=$RESOURCE_GROUP
 elif [ "$1" == "plan" ]; then
     echo "Showing changes required by the current configuration..."
-    az deployment group what-if --resource-group $RESOURCE_GROUP --template-file $TEMPLATE_FILE --parameters @$PARAMETERS_FILE --parameters adminGroupObjectIDs='["'$ADMIN_GROUP_OBJECT_ID'"]' suffix=$SUFFIX fluxGitRepository=$FLUX_GIT_REPOSITORY
+    az deployment group what-if --resource-group $RESOURCE_GROUP --template-file $TEMPLATE_FILE --parameters @$PARAMETERS_FILE --parameters adminGroupObjectIDs='["'$ADMIN_GROUP_OBJECT_ID'"]' suffix=$SUFFIX fluxGitRepository=$FLUX_GIT_REPOSITORY sourceAddressPrefix="${MY_IP_ADDRESS}" adminKey="${SSH_PUBKEY}"
 elif [ "$1" == "apply" ]; then
     echo "Create or update infrastructure.."
-    az deployment group create --resource-group $RESOURCE_GROUP --template-file $TEMPLATE_FILE --parameters @$PARAMETERS_FILE --parameters adminGroupObjectIDs='["'$ADMIN_GROUP_OBJECT_ID'"]' suffix=$SUFFIX fluxGitRepository=$FLUX_GIT_REPOSITORY
+    az deployment group create --resource-group $RESOURCE_GROUP --template-file $TEMPLATE_FILE --parameters @$PARAMETERS_FILE --parameters adminGroupObjectIDs='["'$ADMIN_GROUP_OBJECT_ID'"]' suffix=$SUFFIX fluxGitRepository=$FLUX_GIT_REPOSITORY sourceAddressPrefix="${MY_IP_ADDRESS}" adminKey="${SSH_PUBKEY}"
 
     echo "Done. Now give your account admin access to the cluster!"
     echo "Run the following command: "

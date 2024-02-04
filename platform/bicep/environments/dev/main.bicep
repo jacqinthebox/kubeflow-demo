@@ -7,6 +7,11 @@ param addressSpace string
 param subnets array
 param fluxGitRepository string
 
+param adminUsername string
+param adminKey string
+param authenticationType string
+param sourceAddressPrefix string
+
 module virtualNetwork '../../modules/network/vnet.bicep' = {
   name: 'networkModule'
   params: {
@@ -14,12 +19,10 @@ module virtualNetwork '../../modules/network/vnet.bicep' = {
     location: location
     addressSpace: addressSpace
     subnets: subnets
-   }
+  }
 }
 
-
 var snKubeSubnetId = virtualNetwork.outputs.subnetIds[2] // Assuming sn-kube is the third subnet in the array
-
 
 module keyVault '../../modules/keyvault/keyvault.bicep' = {
   name: 'keyVaultModule'
@@ -43,7 +46,6 @@ module aksCluster '../../modules/aks/aks.bicep' = {
   }
 }
 
-
 module acr '../../modules/acr/acr.bicep' = {
   name: 'acrModule'
   params: {
@@ -53,3 +55,17 @@ module acr '../../modules/acr/acr.bicep' = {
   }
 }
 
+module vm '../../modules/vm/vm.bicep' = {
+  name: 'vmModule'
+  params: {
+    location: location
+    suffix: suffix
+    vmSize: vmSize
+    subnetId: virtualNetwork.outputs.subnetIds[0]
+    adminKey: adminKey
+    adminUsername: adminUsername
+    authenticationType: authenticationType
+    vmName: 'vm-${suffix}'
+    sourceAddressPrefix: sourceAddressPrefix
+  }
+}
