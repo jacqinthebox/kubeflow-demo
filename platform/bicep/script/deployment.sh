@@ -8,6 +8,8 @@ EXPECTED_SUBSCRIPTION_ID="subscription_id"
 # (Optional) Change this if needed (respects the CAF naming convention)
 SUFFIX="kf-d-we-99"
 
+CLUSTER_TYPE="public" # or "private"
+
 # (Optional) Change this to the desired location
 LOCATION="westeurope"
 
@@ -23,10 +25,10 @@ MY_IP_ADDRESS="your-ip-address/32"
 # End config
 
 # Do not change this
-PARAMETERS_FILE="../environments/dev/parameters.json"
+PARAMETERS_FILE="../environments/${CLUSTER_TYPE}/parameters.json"
 
 # Do not change this
-TEMPLATE_FILE="../environments/dev/main.bicep"
+TEMPLATE_FILE="../environments/${CLUSTER_TYPE}/main.bicep"
 
 
 # Check if an argument is provided

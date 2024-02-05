@@ -37,6 +37,9 @@
         "sourceAddressPrefix": {
             "value": "80.60.50.40"
         },
+        "enablePrivateCluster": {
+            "value": true
+        },
         "subnets": {
             "value": [
                 {

@@ -11,6 +11,7 @@ param adminUsername string
 param adminKey string
 param authenticationType string
 param sourceAddressPrefix string
+param enablePrivateCluster bool
 
 module virtualNetwork '../../modules/network/vnet.bicep' = {
   name: 'networkModule'
@@ -43,6 +44,7 @@ module aksCluster '../../modules/aks/aks.bicep' = {
     adminGroupObjectIDs: adminGroupObjectIDs
     subnetId: snKubeSubnetId
     fluxGitRepository: fluxGitRepository
+    enablePrivateCluster: enablePrivateCluster
   }
 }
 

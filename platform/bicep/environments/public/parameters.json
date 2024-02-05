@@ -1,0 +1,60 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "location": {
+            "value": "westeurope"
+        },
+        "suffix": {
+            "value": "kf-dev-we-01"
+        },
+        "kubernetesVersion": {
+            "value": "1.28.0"
+        },
+        "vmSize": {
+            "value": "Standard_B2ms"
+        },
+        "adminGroupObjectIDs": {
+            "value": [
+                "00000000-0000-0000-0000-000000000000"
+            ]
+        },
+        "fluxGitRepository": {
+            "value": "https://github.com/jacqinthebox/kubeflow-demo"
+        },
+        "addressSpace": {
+            "value": "10.201.0.0/16"
+        },
+        "adminKey": {
+            "value": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDZ"
+        },
+        "adminUsername": {
+            "value": "vmadmin"
+        },
+        "authenticationType": {
+            "value": "sshPublicKey"
+        },
+        "sourceAddressPrefix": {
+            "value": "80.60.50.40"
+        },
+        "enablePrivateCluster": {
+            "value": true
+        },
+        "subnets": {
+            "value": [
+                {
+                    "name": "sn-mgm",
+                    "addressPrefix": "10.201.0.0/24"
+                },
+                {
+                    "name": "sn-apps",
+                    "addressPrefix": "10.201.1.0/24"
+                },
+                {
+                    "name": "sn-kube",
+                    "addressPrefix": "10.201.32.0/19"
+                }
+            ]
+        }
+    }
+}
