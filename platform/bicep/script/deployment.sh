@@ -6,7 +6,7 @@ set -euo pipefail
 EXPECTED_SUBSCRIPTION_ID="subscription_id"
 
 # (Optional) Change this if needed (respects the CAF naming convention)
-SUFFIX="lab-d-we-002"
+SUFFIX="kf-d-we-01"
 
 # (Optional) Change this to the desired location
 LOCATION="westeurope"
