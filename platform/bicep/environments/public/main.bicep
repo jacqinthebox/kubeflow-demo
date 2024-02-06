@@ -7,11 +7,8 @@ param addressSpace string
 param subnets array
 param fluxGitRepository string
 
-param adminUsername string
-param adminKey string
-param authenticationType string
-param sourceAddressPrefix string
 param enablePrivateCluster bool
+param disableLocalAccounts bool
 
 module virtualNetwork '../../modules/network/vnet.bicep' = {
   name: 'networkModule'
@@ -45,6 +42,7 @@ module aksCluster '../../modules/aks/aks.bicep' = {
     subnetId: snKubeSubnetId
     fluxGitRepository: fluxGitRepository
     enablePrivateCluster: enablePrivateCluster
+    disableLocalAccounts: disableLocalAccounts
   }
 }
 
@@ -54,20 +52,5 @@ module acr '../../modules/acr/acr.bicep' = {
     acrName: 'acr-${suffix}'
     location: location
     aksServicePrincipalId: aksCluster.outputs.aksKubeletIdentityObjectId
-  }
-}
-
-module vm '../../modules/vm/vm.bicep' = {
-  name: 'vmModule'
-  params: {
-    location: location
-    suffix: suffix
-    vmSize: vmSize
-    subnetId: virtualNetwork.outputs.subnetIds[0]
-    adminKey: adminKey
-    adminUsername: adminUsername
-    authenticationType: authenticationType
-    vmName: 'vm-${suffix}'
-    sourceAddressPrefix: sourceAddressPrefix
   }
 }

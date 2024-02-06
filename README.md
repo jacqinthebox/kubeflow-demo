@@ -14,10 +14,12 @@ Please note: This repository and its contents are currently a work in progress. 
 
 ## TLDR
 
+Prerequisites: az-cli, kubectl and jq, or use the Azure Cloud Shell
+
 To deploy a cluster with Bicep, you will need to edit just a few variables in the [deployment](platform/bicep/script/deployment.sh)
  script. 
 
-1. Fork or clone this repo and make executable.
+1. Fork or clone this repo and make executable. 
 
 ```sh
 git clone https://github.com/jacqinthebox/kubeflow-demo.git && cd kubeflow-demo/platform/bicep/script
@@ -43,9 +45,13 @@ az login set --subscription <your sub>
 
 5. Then run `apply` to deploy the cluster including Kubeflow. 
 
-```
+```sh
 ./deployment.sh apply
 ```
+
+6. Once the cluster deployment is finished, you can connect to the cluster (click Connect in the Azure portal)
+
+7. To access the dashboard see here: https://www.kubeflow.org/docs/components/central-dash/access/
 
 
 ## Introduction

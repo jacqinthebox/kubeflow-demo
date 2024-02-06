@@ -40,6 +40,9 @@
         "enablePrivateCluster": {
             "value": true
         },
+        "disableLocalAccounts": {
+            "value": true
+        },
         "subnets": {
             "value": [
                 {

@@ -6,12 +6,13 @@ param adminGroupObjectIDs array
 param addressSpace string
 param subnets array
 param fluxGitRepository string
+param enablePrivateCluster bool
+param disableLocalAccounts bool
 
 param adminUsername string
 param adminKey string
 param authenticationType string
 param sourceAddressPrefix string
-param enablePrivateCluster bool
 
 module virtualNetwork '../../modules/network/vnet.bicep' = {
   name: 'networkModule'
@@ -45,6 +46,7 @@ module aksCluster '../../modules/aks/aks.bicep' = {
     subnetId: snKubeSubnetId
     fluxGitRepository: fluxGitRepository
     enablePrivateCluster: enablePrivateCluster
+    disableLocalAccounts: disableLocalAccounts
   }
 }
 

@@ -14,9 +14,9 @@ param vmSize string
 param adminGroupObjectIDs array
 
 param subnetId string
-param disableLocalAccounts bool = true
-param enablePodSecurityPolicy bool = false
-param enablePrivateCluster bool = false
+param disableLocalAccounts bool
+param enablePodSecurityPolicy bool = false // is now deprecated
+param enablePrivateCluster bool
 param privateDNSZone string = ''
 
 param identityType string = 'systemAssigned' // Choose 'systemAssigned' or 'userAssigned'

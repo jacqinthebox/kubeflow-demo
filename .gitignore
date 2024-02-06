@@ -37,4 +37,4 @@
 # Local history directory
 .idea/**/shelf/
 flux-pat.yaml
-temp.sh
+temp*.sh
