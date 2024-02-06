@@ -6,24 +6,37 @@ set -euo pipefail
 EXPECTED_SUBSCRIPTION_ID="subscription_id"
 
 # (Optional) Change this if needed (respects the CAF naming convention)
-SUFFIX="kf-d-we-99"
+SUFFIX="lab-d-we-002"
 
 # (Optional) Change this to the desired location
 LOCATION="westeurope"
-
+CLUSTER_TYPE="public" # or "private"
 # (Optional) Change the admin group object id
 ADMIN_GROUP_OBJECT_ID="00000000-0000-0000-0000-000000000000"
 
 # Change this to your (forked) git repo
 FLUX_GIT_REPOSITORY="https://github.com/jacqinthebox/kubeflow-demo"
-# End config
+
+# Only needed when CLUSTER_TYPE=private.
+# Change this to your ssh-rsa public key for remote access
+SSH_PUBKEY="your ssh-rsa pub key"
+# Only needed when CLUSTER_TYPE=private.
+# Change this to your ip address for remote access
+MY_IP_ADDRESS="your-ip-address"
+# End config section
 
 
 # Do not change this
-PARAMETERS_FILE="../environments/dev/parameters.json"
+PARAMETERS_FILE="../environments/${CLUSTER_TYPE}/parameters.json"
 
 # Do not change this
-TEMPLATE_FILE="../environments/dev/main.bicep"
+TEMPLATE_FILE="../environments/${CLUSTER_TYPE}/main.bicep"
+
+if [ "$CLUSTER_TYPE" == "public" ]; then
+    EXTRA_PARAMS=()
+else
+    EXTRA_PARAMS=("sourceAddressPrefix=${MY_IP_ADDRESS}" "adminKey=${SSH_PUBKEY}")
+fi
 
 
 # Check if an argument is provided
@@ -59,18 +72,22 @@ if [ "$1" == "init" ]; then
     az group create --name $RESOURCE_GROUP --location $LOCATION
     az configure --defaults group=$RESOURCE_GROUP
 elif [ "$1" == "plan" ]; then
-    echo "Showing changes required by the current configuration..."
-    az deployment group what-if --resource-group $RESOURCE_GROUP --template-file $TEMPLATE_FILE --parameters @$PARAMETERS_FILE --parameters adminGroupObjectIDs='["'$ADMIN_GROUP_OBJECT_ID'"]' suffix=$SUFFIX fluxGitRepository=$FLUX_GIT_REPOSITORY
+    echo "Showing changes required to install or update a $CLUSTER_TYPE aks cluster"
+    az deployment group what-if --resource-group $RESOURCE_GROUP \
+      --template-file $TEMPLATE_FILE \
+      --parameters @$PARAMETERS_FILE \
+      --parameters adminGroupObjectIDs='["'$ADMIN_GROUP_OBJECT_ID'"]' suffix=$SUFFIX fluxGitRepository=$FLUX_GIT_REPOSITORY "${EXTRA_PARAMS[@]}"
 elif [ "$1" == "apply" ]; then
     echo "Create or update infrastructure.."
-    az deployment group create --resource-group $RESOURCE_GROUP --template-file $TEMPLATE_FILE --parameters @$PARAMETERS_FILE --parameters adminGroupObjectIDs='["'$ADMIN_GROUP_OBJECT_ID'"]' suffix=$SUFFIX fluxGitRepository=$FLUX_GIT_REPOSITORY
-
+    az deployment group create --resource-group $RESOURCE_GROUP --template-file $TEMPLATE_FILE \
+      --parameters @$PARAMETERS_FILE \
+      --parameters adminGroupObjectIDs='["'$ADMIN_GROUP_OBJECT_ID'"]' suffix=$SUFFIX fluxGitRepository=$FLUX_GIT_REPOSITORY "${EXTRA_PARAMS[@]}"
     echo "Done. Now give your account admin access to the cluster!"
     echo "Run the following command: "
     echo
     objectId=$(az ad signed-in-user show | jq -r .id)
     echo "az role assignment create --assignee $objectId --role "Azure Kubernetes Service RBAC Admin" --scope /subscriptions/${EXPECTED_SUBSCRIPTION_ID}/resourcegroups/$RESOURCE_GROUP/providers/Microsoft.ContainerService/managedClusters/aks-${SUFFIX}"
-   echo
+    echo
 elif [ "$1" == "destroy" ]; then
     echo "Destroying resource group..."
     az group delete --name $RESOURCE_GROUP --yes

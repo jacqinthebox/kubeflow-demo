@@ -25,6 +25,24 @@
         "addressSpace": {
             "value": "10.201.0.0/16"
         },
+        "adminKey": {
+            "value": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDZ"
+        },
+        "adminUsername": {
+            "value": "vmadmin"
+        },
+        "authenticationType": {
+            "value": "sshPublicKey"
+        },
+        "sourceAddressPrefix": {
+            "value": "80.60.50.40"
+        },
+        "enablePrivateCluster": {
+            "value": true
+        },
+        "disableLocalAccounts": {
+            "value": true
+        },
         "subnets": {
             "value": [
                 {
