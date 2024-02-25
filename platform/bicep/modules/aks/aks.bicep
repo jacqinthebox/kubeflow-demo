@@ -99,6 +99,20 @@ resource aksCluster 'Microsoft.ContainerService/managedClusters@2023-03-02-previ
     oidcIssuerProfile: {
       enabled: true
     }
+    storageProfile: {
+      blobCSIDriver: {
+        enabled: false
+      }
+      diskCSIDriver: {
+        enabled: true
+      }
+      fileCSIDriver: {
+        enabled: false
+      }
+      snapshotController: {
+        enabled: true
+      }
+    }
   }
 }
 
@@ -135,7 +149,7 @@ resource fluxConfig 'Microsoft.KubernetesConfiguration/fluxConfigurations@2023-0
   properties: {
     configurationProtectedSettings: {}
     gitRepository: {
-//      localAuthRef: 'flux-pat'
+      //      localAuthRef: 'flux-pat'
       repositoryRef: {
         branch: 'main'
       }
