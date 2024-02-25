@@ -13,10 +13,10 @@ param vmSize string
 @description('Specifies the aad admim group id.')
 param adminGroupObjectIDs array
 
-param blobCSIDriverEnabled = false
-param fileCSIDriverEnabled = false
-param diskCSIDriverEnabled = true
-param snapshotControllerEnabled = true
+param blobCSIDriverEnabled bool = false
+param fileCSIDriverEnabled bool = false
+param diskCSIDriverEnabled bool = true
+param snapshotControllerEnabled bool = true
 
 param subnetId string
 param disableLocalAccounts bool
