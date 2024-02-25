@@ -20,6 +20,7 @@ FLUX_GIT_REPOSITORY="https://github.com/jacqinthebox/kubeflow-demo"
 # Only needed when CLUSTER_TYPE=private.
 # Change this to your ssh-rsa public key for remote access
 SSH_PUBKEY="your ssh-rsa pub key"
+
 # Only needed when CLUSTER_TYPE=private.
 # Change this to your ip address for remote access
 MY_IP_ADDRESS="your-ip-address"

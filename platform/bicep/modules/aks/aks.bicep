@@ -13,6 +13,11 @@ param vmSize string
 @description('Specifies the aad admim group id.')
 param adminGroupObjectIDs array
 
+param blobCSIDriverEnabled = false
+param fileCSIDriverEnabled = false
+param diskCSIDriverEnabled = true
+param snapshotControllerEnabled = true
+
 param subnetId string
 param disableLocalAccounts bool
 param enablePodSecurityPolicy bool = false // is now deprecated
@@ -26,8 +31,6 @@ param fluxGitRepository string
 
 var isSystemAssigned = identityType == 'systemAssigned'
 var isUserAssigned = identityType == 'userAssigned'
-
-
 
 resource aksCluster 'Microsoft.ContainerService/managedClusters@2023-03-02-preview' = {
   name: 'aks-${suffix}'
@@ -99,66 +102,80 @@ resource aksCluster 'Microsoft.ContainerService/managedClusters@2023-03-02-previ
     oidcIssuerProfile: {
       enabled: true
     }
-  }
-}
-
-resource fluxExtension 'Microsoft.KubernetesConfiguration/extensions@2023-05-01' = {
-  name: 'flux'
-  scope: aksCluster
-  properties: {
-    autoUpgradeMinorVersion: true
-    configurationProtectedSettings: {}
-    configurationSettings: {
-      'helm-controller.enabled': 'true'
-      'image-automation-controller.enabled': 'false'
-      'image-reflector-controller.enabled': 'false'
-      'kustomize-controller.enabled': 'true'
-      'notification-controller.enabled': 'true'
-      'source-controller.enabled': 'true'
-    }
-    extensionType: 'microsoft.flux'
-    releaseTrain: 'Stable'
-    scope: {
-      cluster: {
-        releaseNamespace: 'flux-system'
+    storageProfile: {
+      blobCSIDriver: {
+        enabled: blobCSIDriverEnabled
       }
-      // namespace: {
-      //   targetNamespace: 'cluster-config'
-      // }
+      diskCSIDriver: {
+        enabled: diskCSIDriverEnabled
+      }
+      fileCSIDriver: {
+        enabled: fileCSIDriverEnabled
+      }
+      snapshotController: {
+        enabled: snapshotControllerEnabled
+      }
     }
   }
 }
-
-resource fluxConfig 'Microsoft.KubernetesConfiguration/fluxConfigurations@2023-05-01' = {
-  name: 'flux-config'
-  scope: aksCluster
-  properties: {
-    configurationProtectedSettings: {}
-    gitRepository: {
-//      localAuthRef: 'flux-pat'
-      repositoryRef: {
-        branch: 'main'
+/**
+  resource fluxExtension 'Microsoft.KubernetesConfiguration/extensions@2023-05-01' = {
+    name: 'flux'
+    scope: aksCluster
+    properties: {
+      autoUpgradeMinorVersion: true
+      configurationProtectedSettings: {}
+      configurationSettings: {
+        'helm-controller.enabled': 'true'
+        'image-automation-controller.enabled': 'false'
+        'image-reflector-controller.enabled': 'false'
+        'kustomize-controller.enabled': 'true'
+        'notification-controller.enabled': 'true'
+        'source-controller.enabled': 'true'
       }
-      syncIntervalInSeconds: 300
-      timeoutInSeconds: 300
-      url: fluxGitRepository
+      extensionType: 'microsoft.flux'
+      releaseTrain: 'Stable'
+      scope: {
+        cluster: {
+          releaseNamespace: 'flux-system'
+        }
+        // namespace: {
+        //   targetNamespace: 'cluster-config'
+        // }
+      }
     }
-    kustomizations: {
-      infra: {
-        dependsOn: []
-        path: './gitops/infrastructure'
-        prune: true
+  }
+
+  resource fluxConfig 'Microsoft.KubernetesConfiguration/fluxConfigurations@2023-05-01' = {
+    name: 'flux-config'
+    scope: aksCluster
+    properties: {
+      configurationProtectedSettings: {}
+      gitRepository: {
+        //      localAuthRef: 'flux-pat'
+        repositoryRef: {
+          branch: 'main'
+        }
         syncIntervalInSeconds: 300
-        timeoutInSeconds: 180
+        timeoutInSeconds: 300
+        url: fluxGitRepository
       }
+      kustomizations: {
+        infra: {
+          dependsOn: []
+          path: './gitops/infrastructure'
+          prune: true
+          syncIntervalInSeconds: 300
+          timeoutInSeconds: 180
+        }
+      }
+      namespace: 'cluster-config'
+      scope: 'cluster'
+      sourceKind: 'GitRepository'
+      suspend: false
     }
-    namespace: 'cluster-config'
-    scope: 'cluster'
-    sourceKind: 'GitRepository'
-    suspend: false
   }
-}
-
+*/
 output aksClusterId string = aksCluster.id
 output aksKubeletIdentityObjectId string = aksCluster.properties.identityProfile.kubeletidentity.objectId
 output aksIdentityPrincipalId string = isSystemAssigned ? aksCluster.identity.principalId : ''

@@ -15,7 +15,7 @@ Please note: This repository and its contents are currently a work in progress. 
 ## TLDR
 
 Prerequisites: az-cli, kubectl and jq, or use the Azure Cloud Shell
-
+az aks install-cli
 To deploy a cluster with Bicep, you will need to edit just a few variables in the [deployment](platform/bicep/script/deployment.sh)
  script. 
 
