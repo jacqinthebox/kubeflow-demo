@@ -1,0 +1,62 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "location": {
+            "value": "westeurope"
+        },
+        "suffix": {
+            "value": "kf-dev-we-01"
+        },
+        "kubernetesVersion": {
+            "value": "1.28.5"
+        },
+        "vmSize": {
+            "value": "Standard_B2ms"
+        },
+        "adminGroupObjectIDs": {
+            "value": [
+                "00000000-0000-0000-0000-000000000000"
+            ]
+        },
+        "fluxGitRepository": {
+            "value": "https://github.com/jacqinthebox/kubeflow-demo"
+        },
+        "addressSpace": {
+            "value": "10.202.0.0/16"
+        },
+        "enablePrivateCluster": {
+            "value": false
+        },
+        "disableLocalAccounts": {
+            "value": true
+        },
+        "subnets": {
+            "value": [
+                {
+                    "name": "sn-mgm",
+                    "addressPrefix": "10.202.0.0/24"
+                },
+                {
+                    "name": "sn-apps",
+                    "addressPrefix": "10.202.1.0/24"
+                },
+                {
+                    "name": "sn-kube",
+                    "addressPrefix": "10.202.32.0/19"
+                }
+            ]
+        },
+        "kustomizations": {
+            "value": {
+                "base": {
+                    "dependsOn": [],
+                    "path": "./gitops/base",
+                    "prune": true,
+                    "syncIntervalInSeconds": 300,
+                    "timeoutInSeconds": 180
+                }
+            }
+        }
+    }
+}

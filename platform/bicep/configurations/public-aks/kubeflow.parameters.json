@@ -9,7 +9,7 @@
             "value": "kf-dev-we-01"
         },
         "kubernetesVersion": {
-            "value": "1.28.0"
+            "value": "1.28.5"
         },
         "vmSize": {
             "value": "Standard_B2ms"
