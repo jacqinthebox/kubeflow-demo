@@ -43,7 +43,6 @@ module aksCluster '../../modules/aks/aks.bicep' = {
     vmSize: vmSize
     adminGroupObjectIDs: adminGroupObjectIDs
     subnetId: snKubeSubnetId
-    fluxGitRepository: fluxGitRepository
     enablePrivateCluster: enablePrivateCluster
     disableLocalAccounts: disableLocalAccounts
   }

@@ -22,11 +22,8 @@ param privateDNSZone string = ''
 param identityType string = 'systemAssigned' // Choose 'systemAssigned' or 'userAssigned'
 param userAssignedIdentityId string = '' // Resource ID of the user-assigned identity (required if identityType is 'userAssigned')
 
-param fluxGitRepository string
-
 var isSystemAssigned = identityType == 'systemAssigned'
 var isUserAssigned = identityType == 'userAssigned'
-
 
 
 resource aksCluster 'Microsoft.ContainerService/managedClusters@2023-03-02-preview' = {
@@ -116,62 +113,7 @@ resource aksCluster 'Microsoft.ContainerService/managedClusters@2023-03-02-previ
   }
 }
 
-resource fluxExtension 'Microsoft.KubernetesConfiguration/extensions@2023-05-01' = {
-  name: 'flux'
-  scope: aksCluster
-  properties: {
-    autoUpgradeMinorVersion: true
-    configurationProtectedSettings: {}
-    configurationSettings: {
-      'helm-controller.enabled': 'true'
-      'image-automation-controller.enabled': 'false'
-      'image-reflector-controller.enabled': 'false'
-      'kustomize-controller.enabled': 'true'
-      'notification-controller.enabled': 'true'
-      'source-controller.enabled': 'true'
-    }
-    extensionType: 'microsoft.flux'
-    releaseTrain: 'Stable'
-    scope: {
-      cluster: {
-        releaseNamespace: 'flux-system'
-      }
-      // namespace: {
-      //   targetNamespace: 'cluster-config'
-      // }
-    }
-  }
-}
 
-resource fluxConfig 'Microsoft.KubernetesConfiguration/fluxConfigurations@2023-05-01' = {
-  name: 'flux-config'
-  scope: aksCluster
-  properties: {
-    configurationProtectedSettings: {}
-    gitRepository: {
-      //      localAuthRef: 'flux-pat'
-      repositoryRef: {
-        branch: 'main'
-      }
-      syncIntervalInSeconds: 300
-      timeoutInSeconds: 300
-      url: fluxGitRepository
-    }
-    kustomizations: {
-      infra: {
-        dependsOn: []
-        path: './gitops/infrastructure'
-        prune: true
-        syncIntervalInSeconds: 300
-        timeoutInSeconds: 180
-      }
-    }
-    namespace: 'cluster-config'
-    scope: 'cluster'
-    sourceKind: 'GitRepository'
-    suspend: false
-  }
-}
 
 output aksClusterId string = aksCluster.id
 output aksClusterName string = aksCluster.name

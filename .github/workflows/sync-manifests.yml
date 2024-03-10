@@ -42,7 +42,7 @@ jobs:
         run: |
           sed -i '/name: istio-sidecar-injector/a \ \ annotations:\n\ \ \ \ admissions.enforcer/disabled: '\''true'\''' gitops/machine-learning/kubeflow/manifests/common/istio-1-17/istio-install/base/install.yaml
 
-      - name: plumbing yaml to add namespace to deafult-install-config-9h2h2b6hbk configmap
+      - name: plumbing yaml to add namespace to default-install-config-9h2h2b6hbk configmap
         run: |
           sed -i 's/\(configMapGenerator:\)/namespace: kubeflow\n\1/' gitops/machine-learning/kubeflow/manifests/common/user-namespace/base/kustomization.yaml
 
