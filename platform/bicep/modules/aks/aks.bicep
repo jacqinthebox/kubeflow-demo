@@ -174,6 +174,7 @@ resource fluxConfig 'Microsoft.KubernetesConfiguration/fluxConfigurations@2023-0
 }
 
 output aksClusterId string = aksCluster.id
+output aksClusterName string = aksCluster.name
 output aksKubeletIdentityObjectId string = aksCluster.properties.identityProfile.kubeletidentity.objectId
 output aksIdentityPrincipalId string = isSystemAssigned ? aksCluster.identity.principalId : ''
 output aksIdentityType string = aksCluster.identity.type

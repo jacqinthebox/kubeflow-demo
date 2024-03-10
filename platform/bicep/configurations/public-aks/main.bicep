@@ -5,7 +5,10 @@ param vmSize string
 param adminGroupObjectIDs array
 param addressSpace string
 param subnets array
+
+
 param fluxGitRepository string
+param kustomizations object
 
 param enablePrivateCluster bool
 param disableLocalAccounts bool
@@ -53,4 +56,20 @@ module acr '../../modules/acr/acr.bicep' = {
     location: location
     aksServicePrincipalId: aksCluster.outputs.aksKubeletIdentityObjectId
   }
+}
+
+module fluxExtension '../../modules/flux/fluxExtension.bicep' = {
+  name: 'fluxExtensionModule'
+  params: {
+    aksClusterName: aksCluster.outputs.aksClusterName
+  }
+}
+
+module fluxConfig '../../modules/flux/fluxConfigurations.bicep' = {
+  name: 'fluxConfigModule'
+  params: {
+    aksClusterName: aksCluster.outputs.aksClusterName
+    fluxGitRepository: fluxGitRepository
+    kustomizations: kustomizations
+    }
 }

@@ -3,21 +3,20 @@ set -euo pipefail
 
 # Begin config section
 # (Required) Your Azure subscription id
-EXPECTED_SUBSCRIPTION_ID="subscription_id"
+EXPECTED_SUBSCRIPTION_ID="00000000-0000-0000-0000-000000000000"
 
 # (Optional) Change this if needed (respects the CAF naming convention)
-SUFFIX="kf-d-we-01"
+SUFFIX="ml-d-we-01"
 
 # (Optional) Change this to the desired location
 LOCATION="westeurope"
-CLUSTER_TYPE="public" # or "private"
-# (Optional) Change the admin group object id
 ADMIN_GROUP_OBJECT_ID="00000000-0000-0000-0000-000000000000"
+PUBLIC_CLUSTER=true
 
 # Change this to your (forked) git repo
 FLUX_GIT_REPOSITORY="https://github.com/jacqinthebox/kubeflow-demo"
 
-# Only needed when CLUSTER_TYPE=private.
+# Only needed when PUBLIC_CLUSTER=false:
 # Change this to your ssh-rsa public key for remote access
 SSH_PUBKEY="your ssh-rsa pub key"
 # Only needed when CLUSTER_TYPE=private.
@@ -26,13 +25,26 @@ MY_IP_ADDRESS="your-ip-address"
 # End config section
 
 
-# Do not change this
-PARAMETERS_FILE="../environments/${CLUSTER_TYPE}/parameters.json"
+# Main
+# Check the value of PUBLIC_CLUSTER
+if [ "$PUBLIC_CLUSTER" = true ]; then
+    CLUSTER_PATH='public-aks'
+else
+    CLUSTER_PATH='private-aks'
+fi
 
-# Do not change this
-TEMPLATE_FILE="../environments/${CLUSTER_TYPE}/main.bicep"
 
-if [ "$CLUSTER_TYPE" == "public" ]; then
+if [ "$KUBEFLOW" == true ]; then
+    PARAMETERS_FILE="../configurations/${CLUSTER_PATH}/kubeflow.parameters.json"
+else
+    PARAMETERS_FILE="../configurations/${CLUSTER_PATH}/parameters.json"
+fi
+
+
+TEMPLATE_FILE="../configurations/${CLUSTER_PATH}/main.bicep"
+
+
+if [ "$PUBLIC_CLUSTER" == true ]; then
     EXTRA_PARAMS=()
 else
     EXTRA_PARAMS=("sourceAddressPrefix=${MY_IP_ADDRESS}" "adminKey=${SSH_PUBKEY}")
@@ -72,7 +84,7 @@ if [ "$1" == "init" ]; then
     az group create --name $RESOURCE_GROUP --location $LOCATION
     az configure --defaults group=$RESOURCE_GROUP
 elif [ "$1" == "plan" ]; then
-    echo "Showing changes required to install or update a $CLUSTER_TYPE aks cluster"
+    echo "Showing changes required to install or update an aks cluster"
     az deployment group what-if --resource-group $RESOURCE_GROUP \
       --template-file $TEMPLATE_FILE \
       --parameters @$PARAMETERS_FILE \
