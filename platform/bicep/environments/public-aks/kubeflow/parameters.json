@@ -46,6 +46,31 @@
                     "addressPrefix": "10.201.32.0/19"
                 }
             ]
+        },
+        "kustomizations": {
+            "value": {
+                "base": {
+                    "dependsOn": [],
+                    "path": "./gitops/base",
+                    "prune": true,
+                    "syncIntervalInSeconds": 300,
+                    "timeoutInSeconds": 180
+                    },
+                "machine-learning": {
+                    "dependsOn": [],
+                    "path": "./gitops/machine-learning",
+                    "prune": true,
+                    "syncIntervalInSeconds": 300,
+                    "timeoutInSeconds": 180
+                },
+                "apps": {
+                    "dependsOn": [],
+                    "path": "./gitops/apps",
+                    "prune": true,
+                    "syncIntervalInSeconds": 300,
+                    "timeoutInSeconds": 180
+                }
+            }
         }
     }
 }
