@@ -6,12 +6,25 @@ set -euo pipefail
 EXPECTED_SUBSCRIPTION_ID="00000000-0000-0000-0000-000000000000"
 
 # (Optional) Change this if needed (respects the CAF naming convention)
-SUFFIX="ml-d-we-01"
+SUFFIX="ml-d-we-02"
 
 # (Optional) Change this to the desired location
 LOCATION="westeurope"
 ADMIN_GROUP_OBJECT_ID="00000000-0000-0000-0000-000000000000"
 PUBLIC_CLUSTER=true
+
+EXPECTED_SUBSCRIPTION_ID="e267d216-a7aa-42e4-905a-f18316a144c4"
+
+# (Optional) Change this if needed (respects the CAF naming convention)
+SUFFIX="ml-d-we-02"
+
+# (Optional) Change this to the desired location
+LOCATION="westeurope"
+PUBLIC_CLUSTER=true
+
+
+# (Optional) Change the admin group object id
+ADMIN_GROUP_OBJECT_ID="e1ad18a1-95ec-4cc4-8eb4-61a6aeecff1f"
 
 # Change this to your (forked) git repo
 FLUX_GIT_REPOSITORY="https://github.com/jacqinthebox/kubeflow-demo"

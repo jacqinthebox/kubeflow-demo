@@ -42,8 +42,6 @@ spec:
       - name: tekton-pipelineloop-controller
         image: quay.io/aipipeline/pipelineloop-controller:nightly
         env:
-        - name: KFPV2
-          value: "true"
         - name: SYSTEM_NAMESPACE
           valueFrom:
             fieldRef:

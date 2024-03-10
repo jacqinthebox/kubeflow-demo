@@ -1,11 +1,10 @@
 approvers:
-  - juliusvonkohout
-  - kimwnasptd
-reviewers:
-  - juliusvonkohout
-  - kimwnasptd
-emeritus_approvers:
   - elikatsis
+  - juliusvonkohout
+  - kimwnasptd
   - PatrickXYS
   - StefanoFioravanzo
   - yanniszark
+reviewers:
+  - juliusvonkohout
+  - kimwnasptd

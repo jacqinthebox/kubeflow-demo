@@ -10,8 +10,6 @@ echo "Setting up port-forward..."
 
 echo "Running the tests."""
 python3 mnist.py
-# runasnonroot.sh
-
 
 echo "Cleaning up opened processes."""
 ./hack/cleanup_proxies.sh
