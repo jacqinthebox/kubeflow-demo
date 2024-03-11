@@ -13,6 +13,11 @@ param vmSize string
 @description('Specifies the aad admim group id.')
 param adminGroupObjectIDs array
 
+param blobCSIDriverEnabled bool = false
+param fileCSIDriverEnabled bool = false
+param diskCSIDriverEnabled bool = true
+param snapshotControllerEnabled bool = true
+
 param subnetId string
 param disableLocalAccounts bool
 param enablePodSecurityPolicy bool = false // is now deprecated
@@ -98,16 +103,16 @@ resource aksCluster 'Microsoft.ContainerService/managedClusters@2023-03-02-previ
     }
     storageProfile: {
       blobCSIDriver: {
-        enabled: false
+        enabled: blobCSIDriverEnabled
       }
       diskCSIDriver: {
-        enabled: true
+        enabled: diskCSIDriverEnabled
       }
       fileCSIDriver: {
-        enabled: false
+        enabled: fileCSIDriverEnabled
       }
       snapshotController: {
-        enabled: true
+        enabled: snapshotControllerEnabled
       }
     }
   }

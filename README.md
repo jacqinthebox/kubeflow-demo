@@ -5,16 +5,23 @@ Please note: This repository and its contents are currently a work in progress. 
 
 
 ## Table of Contents
-- [TLDR](#tldr)
-- [Introduction](#introduction)
-- [Bicep](#bicep)
-- [Terraform](#terraform)
-- [Kubeflow](#kubeflow)
-- [Disclaimer](#disclaimer)
+- [Kubeflow demo](#kubeflow-demo)
+  - [Table of Contents](#table-of-contents)
+  - [TLDR](#tldr)
+  - [Introduction](#introduction)
+  - [Bicep](#bicep)
+  - [Terraform](#terraform)
+  - [Kubeflow](#kubeflow)
+  - [Disclaimer](#disclaimer)
 
 ## TLDR
 
-Prerequisites: az-cli, kubectl and jq, or use the Azure Cloud Shell
+Use the he Azure Cloud Shell, or install: 
+
+```sh
+sudo apt install az-cli kubectl jq wget curl # or use any other package manaager
+az aks install-cli # kubelogin
+```
 
 To deploy a cluster with Bicep, you will need to edit just a few variables in the [deployment](platform/bicep/script/deployment.sh)
  script. 
