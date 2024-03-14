@@ -1,0 +1,42 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "location": {
+            "value": "westeurope"
+        },
+        "suffix": {
+            "value": "shared-d-we-01"
+        },
+        "vmSize": {
+            "value": "Standard_B2ms"
+        },
+        "hubAddressSpace": {
+            "value": "10.20.0.0/16"
+        },
+        "adminKey": {
+            "value": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC0z+BmXyZCI723U1QF+iwjZFLr1SxZdj18wyOjcRtR0511LkDrpl4SVJXzjZc38X/JZxow8F+rQzfpGPQM7T4eG+ylHaxUXeCXSXGtqrLAXmCE4smonHA4Cij+mCEHSrB6SskY5/FXgj8LZjHQaaBVUUkg1W6podWUpv+IHCQR6U7LeXdqamfEt0DKp6kdQuRkUnQnib3O6G1n6xo6X4kjmW80t4OMRKLNr/ZUD+OtVvTQQWGir3j0x7sUp9JvwWrTTAZgYIJHHpJrHJcEDk5bBG9RjsUFaWc2K966frEPCIsP07qOmJO3Jj+XbxexEGOK9hExhVOvaqe7ndp2XAztjazLPZCm17SFE/38ObdNHXfLaJ78ZO4CDy5QcVQm9yi4vhj/NBGzinH7zm/KhiMtNW8wru0lRH9dQ5paqQv9d7jnpFl7FBcndz+KDm6M0GEdHpk8k6ChLK/NsXDH2H//PzbzAzMkMtYs2nXiL1Izqt8ZvS5h2g7Ot06A6hOx1DE= jacqueline@my-macbook-air-m2.home"
+        },
+        "adminUsername": {
+            "value": "vmadmin"
+        },
+        "authenticationType": {
+            "value": "sshPublicKey"
+        },
+        "sourceAddressPrefix": {
+            "value": "80.60.50.40"
+        },
+        "hubSubnets": {
+            "value": [
+                {
+                    "name": "sn-mgm",
+                    "addressPrefix": "10.20.0.0/24"
+                },
+                {
+                    "name": "sn-conn",
+                    "addressPrefix": "10.20.1.0/24"
+                }
+            ]
+        }
+    }
+}

@@ -1,11 +1,14 @@
+//param virtualNetworkId string
+param privateDnsZoneName string
 param virtualNetworkId string
 
-resource privateDnsZone 'Microsoft.Network/privateDnsZones@2018-09-01' = {
-  name: 'privatelink.westeurope.azmk8s.io'
+// We need to create a private dns zone in the hub network
+resource privateDnsZone 'Microsoft.Network/privateDnsZones@2020-06-01' = {
+  name: privateDnsZoneName
   location: 'global'
 }
 
-resource privateDnsZoneVirtualNetworkLink 'Microsoft.Network/privateDnsZones/virtualNetworkLinks@2018-09-01' = {
+resource privateDnsZoneVirtualNetworkLink 'Microsoft.Network/privateDnsZones/virtualNetworkLinks@2020-06-01' = {
   parent: privateDnsZone
   name: 'link-to-vnet'
   location: 'global'
@@ -16,3 +19,4 @@ resource privateDnsZoneVirtualNetworkLink 'Microsoft.Network/privateDnsZones/vir
     registrationEnabled: false
   }
 }
+

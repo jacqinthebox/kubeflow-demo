@@ -49,9 +49,9 @@
         },
         "kustomizations": {
             "value": {
-                "base": {
+                "infra": {
                     "dependsOn": [],
-                    "path": "./gitops/base",
+                    "path": "./gitops/infra",
                     "prune": true,
                     "syncIntervalInSeconds": 300,
                     "timeoutInSeconds": 180

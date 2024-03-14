@@ -6,10 +6,10 @@
             "value": "westeurope"
         },
         "suffix": {
-            "value": "kf-dev-we-01"
+            "value": "app01-d-we-01"
         },
         "kubernetesVersion": {
-            "value": "1.28.0"
+            "value": "1.28.5"
         },
         "vmSize": {
             "value": "Standard_B2ms"
@@ -22,20 +22,8 @@
         "fluxGitRepository": {
             "value": "https://github.com/jacqinthebox/kubeflow-demo"
         },
-        "addressSpace": {
-            "value": "10.201.0.0/16"
-        },
-        "adminKey": {
-            "value": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDZ"
-        },
-        "adminUsername": {
-            "value": "vmadmin"
-        },
-        "authenticationType": {
-            "value": "sshPublicKey"
-        },
-        "sourceAddressPrefix": {
-            "value": "80.60.50.40"
+        "spokeAddressSpace": {
+            "value": "10.200.0.0/16"
         },
         "enablePrivateCluster": {
             "value": true
@@ -43,21 +31,42 @@
         "disableLocalAccounts": {
             "value": true
         },
-        "subnets": {
+        "fluxGitBranch": {
+            "value": "main"
+        },
+        "spokeSubnets": {
             "value": [
                 {
                     "name": "sn-mgm",
-                    "addressPrefix": "10.201.0.0/24"
+                    "addressPrefix": "10.200.0.0/24"
                 },
                 {
                     "name": "sn-apps",
-                    "addressPrefix": "10.201.1.0/24"
+                    "addressPrefix": "10.200.1.0/24"
                 },
                 {
                     "name": "sn-kube",
-                    "addressPrefix": "10.201.32.0/19"
+                    "addressPrefix": "10.200.32.0/19"
                 }
             ]
+        },
+        "kustomizations": {
+            "value": {
+                "base": {
+                    "dependsOn": [],
+                    "path": "./gitops/infra",
+                    "prune": true,
+                    "syncIntervalInSeconds": 300,
+                    "timeoutInSeconds": 180
+                },
+                "apps": {
+                    "dependsOn": [],
+                    "path": "./gitops/apps",
+                    "prune": true,
+                    "syncIntervalInSeconds": 300,
+                    "timeoutInSeconds": 180
+                }
+            }
         }
     }
 }

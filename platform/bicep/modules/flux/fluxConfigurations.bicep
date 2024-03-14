@@ -22,6 +22,8 @@ param kustomizations object = {
   }
 }
 
+@description('The branch of the git repository to use')
+param fluxGitBranch string = 'main'
 
 resource aksCluster 'Microsoft.ContainerService/managedClusters@2021-08-01' existing = {
   name: aksClusterName
@@ -33,9 +35,9 @@ resource fluxConfig 'Microsoft.KubernetesConfiguration/fluxConfigurations@2023-0
   properties: {
     configurationProtectedSettings: {}
     gitRepository: {
-      //      localAuthRef: 'flux-pat'
+      // localAuthRef: 'flux-pat'
       repositoryRef: {
-        branch: 'main'
+        branch: fluxGitBranch
       }
       syncIntervalInSeconds: 300
       timeoutInSeconds: 300

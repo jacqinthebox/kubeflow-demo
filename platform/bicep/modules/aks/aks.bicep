@@ -24,24 +24,25 @@ param enablePodSecurityPolicy bool = false // is now deprecated
 param enablePrivateCluster bool
 param privateDNSZone string = ''
 
-param identityType string = 'systemAssigned' // Choose 'systemAssigned' or 'userAssigned'
-param userAssignedIdentityId string = '' // Resource ID of the user-assigned identity (required if identityType is 'userAssigned')
-
-var isSystemAssigned = identityType == 'systemAssigned'
-var isUserAssigned = identityType == 'userAssigned'
-
+param userAssignedIdentityId string
 
 resource aksCluster 'Microsoft.ContainerService/managedClusters@2023-03-02-preview' = {
   name: 'aks-${suffix}'
   location: location
-  identity: isSystemAssigned ? {
-    type: 'SystemAssigned'
-  } : isUserAssigned ? {
+  identity: {
     type: 'UserAssigned'
     userAssignedIdentities: {
       '${userAssignedIdentityId}': {}
     }
-  } : null
+  }
+  //  identity: isSystemAssigned ? {
+  //    type: 'SystemAssigned'
+  //  } : isUserAssigned ? {
+  //    type: 'UserAssigned'
+  //    userAssignedIdentities: {
+  //      '${userAssignedIdentityId}': {}
+  //    }
+  //  } : null
   properties: {
     kubernetesVersion: kubernetesVersion
     dnsPrefix: 'aks-${suffix}'
@@ -118,10 +119,8 @@ resource aksCluster 'Microsoft.ContainerService/managedClusters@2023-03-02-previ
   }
 }
 
-
-
 output aksClusterId string = aksCluster.id
 output aksClusterName string = aksCluster.name
 output aksKubeletIdentityObjectId string = aksCluster.properties.identityProfile.kubeletidentity.objectId
-output aksIdentityPrincipalId string = isSystemAssigned ? aksCluster.identity.principalId : ''
 output aksIdentityType string = aksCluster.identity.type
+
