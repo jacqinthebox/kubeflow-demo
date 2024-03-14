@@ -249,7 +249,7 @@ module aksCluster '../../modules/aks/aks.bicep' = {
     subnetId: snKubeSubnetId
     enablePrivateCluster: enablePrivateCluster
     disableLocalAccounts: disableLocalAccounts
-    privateDNSZone: privatednsZoneName
+    privateDNSZone: privatednsZoneId
     userAssignedIdentityId: userAssignedIdentity.outputs.guid
   }
 }
